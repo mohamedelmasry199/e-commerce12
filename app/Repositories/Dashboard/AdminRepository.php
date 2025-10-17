@@ -14,7 +14,7 @@ class AdminRepository
         //
     }
         public function getAdmins(){
-            $admins = Admin::with('role')->select('id','name','email','created_at','status','role_id')->get();
+            $admins = Admin::with('role')->select('id','name','email','created_at','status','role_id')->paginate();
             return $admins;
         }
 
@@ -36,10 +36,10 @@ class AdminRepository
             return $admin->delete();;
         }
 
-        public function changeStatus($admin, $status){
-            $admin->status = $status;
-            $admin->save();
-            return $admin;
+        public function changeStatus($admin){
+           $status = $admin->status == 'Active'?  0 : 1;
+           $admin->update(['status' => $status]);
+           return $admin;
         }
 
 }

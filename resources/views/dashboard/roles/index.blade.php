@@ -1,22 +1,24 @@
 @extends('layouts.dashboard.app')
 @section('title')
-    Roles
+    {{ __('dashboard.roles') }}
 @endsection
 @section('content')
     <div class="app-content content">
         <div class="content-wrapper">
             <div class="content-header row">
                 <div class="content-header-left col-md-6 col-12 mb-2 breadcrumb-new">
-                    <h3 class="content-header-title mb-0 d-inline-block">Basic Forms</h3>
+                    <h3 class="content-header-title mb-0 d-inline-block">{{ __('dashboard.roles') }}</h3>
                     <div class="row breadcrumbs-top d-inline-block">
                         <div class="breadcrumb-wrapper col-12">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a
-                                        href="{{ route('dashboard.index') }}">{{ __('dashboard.dashboard') }}</a>
+                                <li class="breadcrumb-item">
+                                    <a href="{{ route('dashboard.index') }}">{{ __('dashboard.dashboard') }}</a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="{{ route('dashboard.roles.index') }}">Roles</a>
+                                <li class="breadcrumb-item">
+                                    <a href="{{ route('dashboard.roles.index') }}">{{ __('dashboard.roles') }}</a>
                                 </li>
-                                <li class="breadcrumb-item active"><a href="#">Create Role</a>
+                                <li class="breadcrumb-item active">
+                                    {{ __('dashboard.create_role') }}
                                 </li>
                             </ol>
                         </div>
@@ -26,13 +28,13 @@
                     <div class="dropdown float-md-right">
                         <button class="btn btn-danger dropdown-toggle round btn-glow px-2" id="dropdownBreadcrumbButton"
                             type="button" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">Actions</button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownBreadcrumbButton"><a class="dropdown-item"
-                                href="#"><i class="la la-calendar-check-o"></i> Calender</a>
-                            <a class="dropdown-item" href="#"><i class="la la-cart-plus"></i> Cart</a>
-                            <a class="dropdown-item" href="#"><i class="la la-life-ring"></i> Support</a>
-                            <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><i
-                                    class="la la-cog"></i> Settings</a>
+                            aria-expanded="false">{{ __('dashboard.actions') }}</button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownBreadcrumbButton">
+                            <a class="dropdown-item" href="#"><i class="la la-calendar-check-o"></i> {{ __('dashboard.calendar') }}</a>
+                            <a class="dropdown-item" href="#"><i class="la la-cart-plus"></i> {{ __('dashboard.cart') }}</a>
+                            <a class="dropdown-item" href="#"><i class="la la-life-ring"></i> {{ __('dashboard.support') }}</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#"><i class="la la-cog"></i> {{ __('dashboard.settings') }}</a>
                         </div>
                     </div>
                 </div>
@@ -71,40 +73,40 @@
                                             <th scope="row">{{ $loop->iteration }}</th>
                                             <td>{{ $role->role }} </td>
                                             <td>
-
                                                 @if (config('app.locale') == 'ar')
-                                                 @foreach ($role->permession as $perm)
-                                                    @foreach (Config::get('permessions_ar') as $key=>$value )
-                                                    {{ $key== $perm ? $value . ' , ' : '' }}
+                                                    @foreach ($role->permession as $perm)
+                                                        @foreach (Config::get('permessions_ar') as $key => $value)
+                                                            {{ $key == $perm ? $value . ' , ' : '' }}
+                                                        @endforeach
                                                     @endforeach
-                                                 @endforeach
-
                                                 @else
                                                     @foreach ($role->permession as $perm)
-                                                        {{ $perm }},
+                                                        @foreach (Config::get('permessions_en') as $key => $value)
+                                                            {{ $key == $perm ? $value . ' , ' : '' }}
+                                                        @endforeach
                                                     @endforeach
                                                 @endif
-
                                             </td>
                                             <td>
                                                 <div class="dropdown float-md-left">
                                                     <button class="btn btn-danger dropdown-toggle round btn-glow px-2"
                                                         id="dropdownBreadcrumbButton" type="button" data-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false">Operations</button>
+                                                        aria-haspopup="true" aria-expanded="false">{{ __('dashboard.operations') }}</button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownBreadcrumbButton">
                                                         <a class="dropdown-item"
-                                                            href="{{ route('dashboard.roles.edit', $role->id) }}"><i
-                                                                class="la la-edit"></i>Edit</a>
+                                                            href="{{ route('dashboard.roles.edit', $role->id) }}">
+                                                            <i class="la la-edit"></i>{{ __('dashboard.edit') }}
+                                                        </a>
 
-                                                        <div class="dropdown-divider"></div><a class="dropdown-item"
-                                                            href="javascript:void(0)"
-                                                            onclick="if(confirm('Are you sure you want to delete this role?')){document.getElementById('delete-form-{{ $role->id }}').submit();} return false"><i
-                                                                class="la la-trash"></i> Delete</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item" href="javascript:void(0)"
+                                                            onclick="if(confirm('{{ __('dashboard.confirm_delete') }}')){document.getElementById('delete-form-{{ $role->id }}').submit();} return false">
+                                                            <i class="la la-trash"></i> {{ __('dashboard.delete') }}
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </td>
                                         </tr>
-
 
                                         {{-- delete form  --}}
                                         <form id="delete-form-{{ $role->id }}"
@@ -113,9 +115,8 @@
                                             @method('DELETE')
                                         </form>
 
-
                                     @empty
-                                        <td colspan="4"> No Data</td>
+                                        <td colspan="4">{{ __('dashboard.no_data') }}</td>
                                     @endforelse
                                 </tbody>
                             </table>

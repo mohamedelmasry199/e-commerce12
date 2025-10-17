@@ -17,6 +17,9 @@ Route::group([
         Route::get('/', [App\Http\Controllers\Dashboard\DashboardController::class, 'index'])->name('index');
 
         Route::resource('roles', App\Http\Controllers\Dashboard\RoleController::class)->middleware('can:roles');
+
+
         Route::resource('admins', App\Http\Controllers\Dashboard\AdminController::class)->middleware('can:admins');
+        Route::get('admins/{id}/status', [App\Http\Controllers\Dashboard\AdminController::class, 'changeStatus'])->name('admins.status')->middleware('can:admins');
     });
 });

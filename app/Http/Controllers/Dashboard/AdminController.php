@@ -5,16 +5,19 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\AdminRequest;
 use App\Services\Dashboard\AdminService;
+use App\Services\Dashboard\RoleService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
 {
     protected $adminService;
+    protected $roleService;
 
-    public function __construct(AdminService $adminService)
+    public function __construct(AdminService $adminService, RoleService $roleService)
     {
         $this->adminService = $adminService;
+        $this->roleService = $roleService;
     }
     /**
      * Display a listing of the resource.
@@ -30,7 +33,8 @@ class AdminController extends Controller
      */
     public function create()
     {
-        return view('dashboard.admins.create');
+        $roles = $this->roleService->getRoles();
+        return view('dashboard.admins.create', compact('roles'));
     }
 
     /**
@@ -72,7 +76,8 @@ class AdminController extends Controller
             Session::flash('error' , __('dashboard.error_msg'));
             return redirect()->back();
         }
-        return view('dashboard.admins.edit' , compact('admin'));
+        $roles = $this->roleService->getRoles();
+        return view('dashboard.admins.edit' , compact('admin', 'roles'));
     }
 
     /**
@@ -113,15 +118,14 @@ class AdminController extends Controller
         Session::flash('success' , __('dashboard.success_msg'));
         return redirect()->route('dashboard.admins.index');
     }
-    public function changeStatus(Request $request, string $id)
+    public function changeStatus($id)
     {
         $admin = $this->adminService->getAdmin($id);
         if(!$admin){
             Session::flash('error' , __('dashboard.error_msg'));
             return redirect()->back();
         }
-        $status = $request->input('status');
-        $changed = $this->adminService->changeStatus($id, $status);
+        $changed = $this->adminService->changeStatus($id);
         if(!$changed){
             Session::flash('error' , __('dashboard.error_msg'));
             return redirect()->back();

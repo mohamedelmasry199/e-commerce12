@@ -16,38 +16,55 @@ class AdminService
     }
 
     public function getAdmins(){
-        return $this->adminRepository->getAdmins();
+        $admins = $this->adminRepository->getAdmins();
+        if(!$admins){
+            return [];
+        }
+        return $admins;
     }
     public function getAdmin($id){
-        return $this->adminRepository->getAdmin($id);
+        $admin= $this->adminRepository->getAdmin($id);
+        if(!$admin){
+            abort(404);
+        }
+        return $admin;
     }
 
     public function storeAdmin($data){
-        return $this->adminRepository->storeAdmin($data);
+        $admin = $this->adminRepository->storeAdmin($data);
+        if(!$admin){
+            return false;
+        }
+        return $admin;
+
     }
 
     public function updateAdmin($id, $data){
         $admin = $this->adminRepository->getAdmin($id);
-        if ($admin) {
-            return $this->adminRepository->updateAdmin($admin, $data);
+        if(!$admin){
+            abort(404);
         }
-        return null;
+            if($data['password'] == null){
+                unset($data['password']);
+            }
+            return $this->adminRepository->updateAdmin($admin, $data);
+
     }
 
     public function destroyAdmin($id){
         $admin = $this->adminRepository->getAdmin($id);
-        if ($admin) {
-            return $this->adminRepository->destroyAdmin($admin);
+        if (!$admin) {
+            return false;
         }
-        return null;
+        return $this->adminRepository->destroyAdmin($admin);
     }
 
-    public function changeStatus($id, $status){
+    public function changeStatus($id,){
         $admin = $this->adminRepository->getAdmin($id);
-        if ($admin) {
-            return $this->adminRepository->changeStatus($admin, $status);
+        if (!$admin) {
+            return false;
         }
-        return null;
+        return $this->adminRepository->changeStatus($admin);
 
     }
 
