@@ -24,11 +24,45 @@ class CategoryService
             return $category->getTranslation('name',app()->getLocale());
         }
         )
+        ->addColumn('status', function (Category $category) {
+                    return $category->getStatusTranslated();
+
+        }
+        )
          ->addColumn("action", function ($category) {
             return view('dashboard.categories.datatables.actions', compact('category'));
          }
          )
         ->make(true);
-
     }
+    public function getParentCategories(){
+        $categories = $this->categoryRepository->getParentCategories();
+        return $categories;
+    }
+    public function createCategory($data){
+        $category = $this->categoryRepository->createCategory($data);
+        return $category;
+    }
+    public function findById($id){
+        $category = $this->categoryRepository->findById($id);
+        return $category;
+}
+public function getParentCategoriesExceptThis($id){
+    $categories = $this->categoryRepository->getParentCategoriesExceptThis($id);
+    return $categories;
+}
+public function updateCategory($id, $data){
+    $category = $this->categoryRepository->findById($id);
+    if(!$category){
+        return false;
+    }
+    return $this->categoryRepository->updateCategory($category,$data);
+}
+public function deleteCategory($id){
+    $category = $this->categoryRepository->findById($id);
+    if(!$category){
+        return false;
+    }
+    return $this->categoryRepository->deleteCategory($category);
+}
 }

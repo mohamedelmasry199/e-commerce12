@@ -53,6 +53,7 @@ Route::group([
             ############################ brands ##########################
             Route::group(['middleware'=> ['can:brands']], function () {
                 Route::resource('brands', App\Http\Controllers\Dashboard\BrandController::class);
+                Route::get('brands-all' , [App\Http\Controllers\Dashboard\BrandController::class,'getAll'])->name('brands.all');
             });
             ############################ end brands ##########################
 

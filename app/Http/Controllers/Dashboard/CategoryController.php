@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Dashboard\CategoryRequest;
 use App\Models\Category;
 use App\Services\Dashboard\CategoryService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session as Session;
 use Yajra\DataTables\Facades\DataTables;
 
 class CategoryController extends Controller
@@ -32,15 +34,24 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        $categories = $this->categoryService->getParentCategories();
+        return view('dashboard.categories.create', compact('categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        //
+        $data = $request->only(['name','status','parent']);
+        $category = $this->categoryService->createCategory($data);
+        if(!$category){
+            Session::flash('error' , __('dashboard.error_msg'));
+        }
+        else{
+        Session::flash('success' , __('dashboard.success_msg'));
+        }
+        return redirect()->back();
     }
 
     /**
@@ -56,15 +67,27 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $category = $this->categoryService->findById($id);
+        if(!$category){
+            Session::flash('error' , __('dashboard.error_msg'));
+            return redirect()->back();
+        }
+        $categories = $this->categoryService->getParentCategoriesExceptThis($id);
+        return view('dashboard.categories.edit', compact('category','categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CategoryRequest $request , string $id)
     {
-        //
+        $data = $request->only(['name','status','parent']);
+        $category = $this->categoryService->updateCategory($request->id, $data);
+        if(!$category){
+            Session::flash('error' , __('dashboard.error_msg'));
+        }
+        Session::flash('success' , __('dashboard.success_msg'));
+        return redirect()->back();
     }
 
     /**
@@ -72,6 +95,13 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $category = $this->categoryService->deleteCategory($id);
+        if(!$category){
+            Session::flash('error' , __('dashboard.error_msg'));
+        }
+        else{
+        Session::flash('success' , __('dashboard.success_msg'));
+        }
+        return redirect()->back();
     }
 }

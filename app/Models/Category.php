@@ -26,12 +26,20 @@ class Category extends Model
             ]
         ];
     }
-    public function getStatusAttribute(string $status): string{
+//     public function getStatusAttribute(string $status): string{
+//         if(app()->getLocale() == 'en'){
+//         return $status == '1'?'active': 'inactive';
+//     }
+//     else{
+//         return $status == '1'?'مفعل': 'غير مفعل';
+//     }
+// }
+public function getStatusTranslated(): string{
         if(app()->getLocale() == 'en'){
-        return $status == '1'?'active': 'inactive';
+        return $this->status == '1'?'active': 'inactive';
     }
     else{
-        return $status == '1'?'مفعل': 'غير مفعل';
+        return $this->status == '1'?'مفعل': 'غير مفعل';
     }
 }
     public function getCreatedAtAttribute($created_at){
@@ -49,6 +57,6 @@ public function children(){
     return $this->hasMany(Category::class,'parent');
 }
 public function parent(){
-    return $this->belongsTo(Category::class,'parent_id');
+    return $this->belongsTo(Category::class,'parent');
 }
 }
