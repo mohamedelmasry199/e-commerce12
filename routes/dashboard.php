@@ -56,6 +56,12 @@ Route::group([
                 Route::get('brands-all' , [App\Http\Controllers\Dashboard\BrandController::class,'getAll'])->name('brands.all');
             });
             ############################ end brands ##########################
+             ############################ coupons ##########################
+            Route::group(['middleware'=> ['can:coupons']], function () {
+                Route::resource('coupons', App\Http\Controllers\Dashboard\CouponController::class)->except(['create','show']);
+                Route::get('coupons-all' , [App\Http\Controllers\Dashboard\CouponController::class,'getAll'])->name('coupons.all');
+            });
+            ############################ end coupons ##########################
 
     });
 });

@@ -3,6 +3,7 @@
 namespace App\Services\Dashboard;
 
 use App\Repositories\Dashboard\AdminRepository;
+use Illuminate\Support\Facades\Cache;
 
 class AdminService
 {
@@ -35,6 +36,7 @@ class AdminService
         if(!$admin){
             return false;
         }
+        $this->removeFromCache();
         return $admin;
 
     }
@@ -56,7 +58,9 @@ class AdminService
         if (!$admin) {
             return false;
         }
-        return $this->adminRepository->destroyAdmin($admin);
+        $admin = $this->adminRepository->destroyAdmin($admin);
+        $this->removeFromCache();
+        return $admin;
     }
 
     public function changeStatus($id,){
@@ -66,6 +70,9 @@ class AdminService
         }
         return $this->adminRepository->changeStatus($admin);
 
+    }
+    public function removeFromCache(){
+        Cache::forget('admins_count');
     }
 
 }

@@ -4,6 +4,7 @@ namespace App\Services\Dashboard;
 
 use App\Models\Category;
 use App\Repositories\Dashboard\CategoryRepository;
+use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
 class CategoryService
@@ -41,6 +42,7 @@ class CategoryService
     }
     public function createCategory($data){
         $category = $this->categoryRepository->createCategory($data);
+        $this->removeFromCache();
         return $category;
     }
     public function findById($id){
@@ -63,6 +65,11 @@ public function deleteCategory($id){
     if(!$category){
         return false;
     }
-    return $this->categoryRepository->deleteCategory($category);
+    $category = $this->categoryRepository->deleteCategory($category);
+    $this->removeFromCache();
+    return $category;
+}
+public function removeFromCache(){
+    Cache::forget('categories_count');
 }
 }

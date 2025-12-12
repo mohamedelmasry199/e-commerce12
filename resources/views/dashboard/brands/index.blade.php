@@ -51,7 +51,7 @@
                                 <div class="card-body">
                                     {{-- <a href="{{ route('dashboard.brands.create') }}" class="btn btn-outline-success ">{{ __('dashboard.create_brand') }}</a> --}}
 <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#createBrandModal" data-whatever="@mdo">{{ __('dashboard.create_brand') }}</button>
-@include('dashboard.brands.create_modal')
+@include('dashboard.brands._create_modal')
                                     {{-- alert --}}
                                     @include('dashboard.includes.tostar-success')
                                     @include('dashboard.includes.tostar-error')

@@ -5,6 +5,7 @@ namespace App\Services\Dashboard;
 use App\Models\Brand;
 use App\Repositories\Dashboard\BrandRepository;
 use App\Utils\ImageManager;
+use Illuminate\Support\Facades\Cache;
 
 class BrandService
 {
@@ -46,7 +47,9 @@ class BrandService
         {
             $data['logo'] = $this->imageManager->uploadSingleImage('/',$data['logo'],'brands');
         }
-        return $this->brandRepository->createBrand($data);
+        $brand = $this->brandRepository->createBrand($data);
+        $this->removeFromCache();
+        return $brand;
      }
      public function findById($id){
         $brand = $this->brandRepository->findById($id);
@@ -71,7 +74,12 @@ class BrandService
         if ($brand->logo != null) {
         $this->imageManager->deleteImageFromLocal($brand->logo);
         }
-       return $this->brandRepository->deleteBrand($brand);
+       $brand = $this->brandRepository->deleteBrand($brand);
+       $this->removeFromCache();
+       return $brand;
 
+    }
+    public function removeFromCache(){
+        Cache::forget('brands_count');
     }
 }
