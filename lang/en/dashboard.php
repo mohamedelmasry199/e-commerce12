@@ -336,7 +336,26 @@ return [
 'enter_role_name_en' => 'Enter role name in English',
 'enter_role_name_ar' => 'Enter role name in Arabic',
 'permissions' => 'Permissions',
-
+'coupon_code' => 'Coupon Code',
+    'discount_percentage' => 'Discount Percentage',
+    'start_date' => 'Start Date',
+    'end_date' => 'End Date',
+    'usage_limit' => 'Usage Limit',
+    'time_used' => 'Times Used',
+    'status' => 'Status',
+    'active' => 'Active',
+    'inactive' => 'Inactive',
+    'edit_coupon' => 'Edit Coupon',
+    'create_coupon' => 'Create Coupon',
+    'status_change' => 'Change Status',
+     'are_you_sure' => 'Are you sure?',
+    'cannot_revert' => "You won't be able to revert this!",
+    'confirm_update' => 'Yes, update',
+    'confirm_delete' => 'Yes, delete',
+    'confirm_change' => 'Yes, change',
+    'cancel' => 'Cancel',
+    'cancelled' => 'Cancelled',
+    'safe_message' => 'Your data is safe',
 
 
 

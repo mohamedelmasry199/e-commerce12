@@ -78,13 +78,20 @@ class CouponController extends Controller
      */
     public function update(CouponRequest $request, string $id)
     {
-        $data = $request->only('name','status','logo');
+        $data = $request->all();
         $coupon =$this->couponService->updateCoupon($id,$data);
          if (!$coupon){
-            Session::flash('error' , __('dashboard.error_msg'));
+            return response()->json(
+                ['status'=>'error',
+                'message'=>__('dashboard.error_msg')],
+                500
+            );
         }
-        Session::flash('success' , __('dashboard.success_msg'));
-        return redirect()->back();
+
+        return response()->json([
+            'status'=>'success',
+            'message'=>__('dashboard.success_msg'),
+        ],200);
 
     }
 
@@ -95,10 +102,33 @@ class CouponController extends Controller
     {
         $coupon =$this->couponService->deleteCoupon($id);
          if (!$coupon){
-            Session::flash('error' , __('dashboard.error_msg'));
+            return response()->json(
+                ['status'=>'error',
+                'message'=>__('dashboard.error_msg')],
+                500
+            );
         }
-        Session::flash('success' , __('dashboard.success_msg'));
-        return redirect()->back();
 
+        return response()->json([
+            'status'=>'success',
+            'message'=>__('dashboard.success_msg'),
+        ],200);
+
+    }
+    public function changeStatus($id)
+    {
+        $coupon = $this->couponService->changeStatus($id);
+        if (!$coupon){
+           return response()->json(
+               ['status'=>'error',
+               'message'=>__('dashboard.error_msg')],
+               500
+           );
+       }
+
+       return response()->json([
+           'status'=>'success',
+           'message'=>__('dashboard.success_msg'),
+       ],200);
     }
 }

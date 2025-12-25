@@ -60,6 +60,8 @@ Route::group([
             Route::group(['middleware'=> ['can:coupons']], function () {
                 Route::resource('coupons', App\Http\Controllers\Dashboard\CouponController::class)->except(['create','show']);
                 Route::get('coupons-all' , [App\Http\Controllers\Dashboard\CouponController::class,'getAll'])->name('coupons.all');
+                Route::post('changeStatus/{id}' , [App\Http\Controllers\Dashboard\CouponController::class,'changeStatus'])->name('coupons.change_status');
+
             });
             ############################ end coupons ##########################
 

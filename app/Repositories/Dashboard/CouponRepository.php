@@ -28,7 +28,7 @@ class CouponRepository
         return $coupon;
     }
 
-    public function updateCoupon($coupon, $data)
+   public function updateCoupon($coupon, $data)
     {
         $coupon = $coupon->update($data);
         return $coupon;
@@ -38,4 +38,5 @@ class CouponRepository
         $coupon = $coupon->delete();
         return $coupon;
     }
+
 }

@@ -62,4 +62,14 @@ class CouponService
     public function removeFromCache(){
         Cache::forget('coupons_count');
     }
+    public function changeStatus($id){
+        $coupon = $this->findById($id);
+        if(!$coupon){
+            abort(404);
+        }
+        $coupon = $this->couponRepository->updateCoupon($coupon,[
+            'is_active' => !$coupon->is_active,
+        ]);
+        return $coupon;
+    }
 }
