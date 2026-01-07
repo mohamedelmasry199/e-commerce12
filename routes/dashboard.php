@@ -63,6 +63,11 @@ Route::group([
                 Route::post('changeStatus/{id}' , [App\Http\Controllers\Dashboard\CouponController::class,'changeStatus'])->name('coupons.change_status');
 
             });
+            //add can faqs
+               Route::group(['middleware'=> ['can:coupons']], function () {
+                Route::resource('faqs', App\Http\Controllers\Dashboard\FaqController::class)->except(['create','show','edit']);
+
+            });
             ############################ end coupons ##########################
 
     });
