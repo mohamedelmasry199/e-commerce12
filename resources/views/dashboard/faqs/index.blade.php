@@ -43,36 +43,37 @@
                                         {{ __('dashboard.create_faq') }}
                                     </button>
                                     <div>
-
-                                        @forelse ($faqs as $faq)
-                                            <div id="faq_div_{{ $faq->id }}">
-                                                <div class="card" id="headingCollapse51_{{ $faq->id }}">
+                                        <div class="card faq_row" id="headingCollapse51">
+                                            @forelse ($faqs as $faq)
+                                                <div id="faq_div_{{ $faq->id }}">
                                                     <div role="tabpanel" class="card-header border-success">
-                                                        <a data-toggle="collapse" href="#collapse51_{{ $faq->id }}"
-                                                            aria-expanded="true"
+                                                        <a id="question_{{ $faq->id }}" data-toggle="collapse"
+                                                            href="#collapse51_{{ $faq->id }}" aria-expanded="true"
                                                             aria-controls="collapse51_{{ $faq->id }}"
                                                             class="font-medium-1 success">{{ $faq->question }}</a>
                                                         <a faq-id="{{ $faq->id }}" class="delete_confirm_btn"
                                                             href=""><i class="la la-trash float-right"></i></a>
-                                                        <a data-target="#editfaqModal{{ $faq->id }}"
+                                                        <a faq-id="{{ $faq->id }}"
+                                                            data-target="#editfaqModal{{ $faq->id }}"
                                                             data-toggle="modal" href=""><i
                                                                 class="la la-edit float-right"></i></a>
                                                     </div>
-                                                </div>
-                                                <div id="collapse51_{{ $faq->id }}" role="tabpanel"
-                                                    aria-labelledby="headingCollapse51_{{ $faq->id }}"
-                                                    class="card-collapse collapse @if($loop->index == 0) show @endif" aria-expanded="true">
-                                                    <div class="card-body">
-                                                        {{ $faq->answer }}
+                                                    <div id="collapse51_{{ $faq->id }}" role="tabpanel"
+                                                        aria-labelledby="headingCollapse51_{{ $faq->id }}"
+                                                        class="card-collapse collapse @if ($loop->index == 0) show @endif"
+                                                        aria-expanded="true">
+                                                        <div id="answer_{{ $faq->id }}" class="card-body">
+                                                            {{ $faq->answer }}
+                                                        </div>
                                                     </div>
-                                                </div>
 
-                                            </div>
-                                            @include('dashboard.faqs._edit_modal')
-                                        @empty
-                                            <div class="alert alert-info">{{ __('dashboard.no_data') }}</div>
+                                                </div>
+                                                @include('dashboard.faqs._edit_modal')
+                                            @empty
+                                                <div class="alert alert-info">{{ __('dashboard.no_data') }}</div>
+                                        </div>
+                                        @endforelse
                                     </div>
-                                    @endforelse
 
 
                                 </div>
@@ -104,10 +105,8 @@
         $(document).ready(function() {
 
             let lang = "{{ app()->getLocale() }}";
-
             $('#createfaq').on('submit', function(e) {
                 e.preventDefault();
-                var currentPage = $('#yajra_table').DataTable().page(); // get the current page number
                 $.ajax({
                     url: "{{ route('dashboard.faqs.store') }}",
                     method: 'post',
@@ -116,9 +115,31 @@
                     contentType: false,
                     success: function(data) {
                         if (data.status == 'success') {
+                            var id = data.data.id;
+                            var question = lang == 'ar' ? data.data.question.ar : data.data
+                                .question.en;
+                            var answer = lang == 'ar' ? data.data.answer.ar : data.data.answer
+                                .en;
                             $('#createfaq')[0].reset();
-                            $('#yajra_table').DataTable().page(currentPage).draw(false);
                             $('#createfaqModal').modal('hide');
+                            $('.faq_row').prepend(` <div role="tabpanel" class="card-header border-success">
+                                                        <a data-toggle="collapse" href="#collapse51_${id}"
+                                                            aria-expanded="true"
+                                                            aria-controls="collapse51_${id}"
+                                                            class="font-medium-1 success">${question}</a>
+                                                        <a faq-id="${id}" class="delete_confirm_btn"
+                                                            href=""><i class="la la-trash float-right"></i></a>
+                                                        <a data-target="#editfaqModal${id}"
+                                                            data-toggle="modal" href=""><i
+                                                                class="la la-edit float-right"></i></a>
+                                                    </div>
+                                                <div id="collapse51_${id}" role="tabpanel"
+                                                    aria-labelledby="headingCollapse51_${id}"
+                                                    class="card-collapse collapse show " aria-expanded="true">
+                                                    <div class="card-body">
+                                                        ${answer}
+                                                    </div>
+                                                </div>`)
                             Swal.fire({
                                 position: "top-center",
                                 icon: "success",
@@ -139,6 +160,7 @@
                     },
                     error: function(data) {
                         if (data.responseJSON.errors) {
+                            $('#error_list').empty();
                             $.each(data.responseJSON.errors, function(key, value) {
 
                                 $('#error_list').append('<li>' + value[0] + '</li>');
@@ -149,9 +171,10 @@
                 });
             })
 
-            $(document).on('click', '.ajax_delete_btn', function(e) {
+            $(document).on('click', '.delete_confirm_btn', function(e) {
                 e.preventDefault();
                 var faq_id = $(this).attr('faq-id');
+                console.log(faq_id);
                 const swalWithBootstrapButtons = Swal.mixin({
                     customClass: {
                         confirmButton: "btn btn-success",
@@ -180,7 +203,8 @@
 
                             success: function(data) {
                                 if (data.status == 'success') {
-                                    $('#yajra_table').DataTable().ajax.reload();
+                                                                    $('#faq_div_'+faq_id).remove();
+
                                     Swal.fire({
                                         position: "top-center",
                                         icon: "success",
@@ -231,37 +255,15 @@
     </script>
     <script>
         /* ===============================
-               Fill Edit Modal
-            ================================ */
-        $(document).on('click', '.edit-faq-btn', function() {
-
-            let btn = $(this);
-
-            $('#edit_id').val(btn.data('id'));
-            $('#edit_code').val(btn.data('code'));
-            $('#edit_discount').val(btn.data('discount'));
-            $('#edit_start').val(btn.data('start'));
-            $('#edit_end').val(btn.data('end'));
-            $('#edit_limit').val(btn.data('limit'));
-            $('#edit_used').val(btn.data('used'));
-
-            if (btn.data('active') == 1) {
-                $('#edit_active').prop('checked', true);
-            } else {
-                $('#edit_inactive').prop('checked', true);
-            }
-        });
-
-
-        /* ===============================
-           Update faq (AJAX)
-        ================================ */
+                   Update faq (AJAX)
+                ================================ */
         $(document).on('click', '.update_faq_btn', function(e) {
             e.preventDefault();
-
+            let lang = "{{ app()->getLocale() }}";
             let form = $('#updatefaq')[0];
             let formData = new FormData(form);
-            let faqId = $('#edit_id').val();
+
+            var faqId = $(this).attr('faq-id');
 
             $('#edit_error_list').html('');
             $('#edit_error_div').addClass('d-none');
@@ -290,29 +292,50 @@
                         success: function(data) {
 
                             if (data.status === 'success') {
+                                if (data.status === 'success') {
+                                    console.log('Full data:', data);
+                                    console.log('FAQ ID:', faqId);
+                                    console.log('Language:', lang);
+                                    console.log('Question data:', data.data.question);
+                                    console.log('Answer data:', data.data.answer);
 
-                                $('#editfaqModal').modal('hide');
-                                $('#yajra_table').DataTable().ajax.reload(null, false);
+                                    var question = lang == 'ar' ? data.data.question.ar : data
+                                        .data.question.en;
+                                    var answer = lang == 'ar' ? data.data.answer.ar : data.data
+                                        .answer.en;
 
-                                Swal.fire({
-                                    icon: "success",
-                                    title: data.message,
-                                    timer: 1500,
-                                    showConfirmButton: false
-                                });
+                                    console.log('Selected question:', question);
+                                    console.log('Selected answer:', answer);
+                                    console.log('Target element:', '#question_' + faqId);
+                                    console.log('Element exists?', $('#question_' + faqId)
+                                        .length);
+
+                                    $('#editfaqModal' + faqId).modal('hide');
+                                    $('#question_' + faqId).text(question);
+                                    $('#answer_' + faqId).text(answer);
+
+                                    Swal.fire({
+                                        icon: "success",
+                                        title: data.message,
+                                        timer: 1500,
+                                        showConfirmButton: false
+                                    });
+                                }
+
                             }
                         },
 
-                        error: function(xhr) {
-
-                            if (xhr.responseJSON?.errors) {
-                                $.each(xhr.responseJSON.errors, function(key, value) {
-                                    $('#edit_error_list').append('<li>' + value[0] +
+                        error: function(data) {
+                            if (data.responseJSON.errors) {
+                                $('#error_list_' + faqId).empty();
+                                $.each(data.responseJSON.errors, function(key, value) {
+                                    $('#error_list_' + faqId).append('<li>' + value[0] +
                                         '</li>');
+                                    $('#error_div_' + faqId).show();
                                 });
-                                $('#edit_error_div').removeClass('d-none');
                             }
                         }
+
                     });
                 }
             });

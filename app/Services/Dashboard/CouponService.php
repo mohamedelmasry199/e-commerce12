@@ -38,6 +38,9 @@ class CouponService
      }
      public function findById($id){
         $coupon = $this->couponRepository->findById($id);
+        if(!$coupon){
+            abort(404);
+        }
         return $coupon;
      }
      public function updateCoupon($id ,$data){

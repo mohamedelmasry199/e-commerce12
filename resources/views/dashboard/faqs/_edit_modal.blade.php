@@ -15,11 +15,11 @@
             <!-- Body -->
             <div class="modal-body">
 
-                <div class="alert alert-danger d-none" id="edit_error_div">
-                    <ul id="edit_error_list"></ul>
+                <div class="alert alert-danger" id="error_div_{{ $faq->id }}" style="display: none;">
+                    <ul id="error_list_{{ $faq->id }}"></ul>
                 </div>
 
-                <form id="updatefaq">
+                <form  faq-id="{{ $faq->id }}" id="updatefaq">
                     @csrf
                     <input type="hidden" name="_method" value="PUT">
                     <input type="hidden" name="id" id="edit_id">
@@ -66,7 +66,7 @@
                 <button class="btn btn-secondary" data-dismiss="modal">
                     {{ __('dashboard.close') }}
                 </button>
-                <button type="submit" form="updatefaq" class="update_faq_btn btn btn-primary">
+                <button type="submit" form="updatefaq" class="update_faq_btn btn btn-primary" faq-id="{{ $faq->id }}">
                     {{ __('dashboard.save') }}
                 </button>
             </div>
