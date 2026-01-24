@@ -69,6 +69,8 @@ Route::group([
 
             });
             ############################ end coupons ##########################
+        // Settings Route
+        Route::resource('settings', App\Http\Controllers\Dashboard\SettingController::class)->only(['index','update'])->middleware('can:settings');
 
     });
 });

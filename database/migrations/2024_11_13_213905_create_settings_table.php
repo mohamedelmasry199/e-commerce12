@@ -23,8 +23,8 @@ return new class extends Migration
             $table->string('twitter_url',500);
             $table->string('youtube_url',500);
             $table->string('meta_description' , 160);
-            $table->string('logo');
-            $table->string('favicon');
+            $table->string('logo')->default('logo.png');
+            $table->string('favicon')->default('favicon.ico');
 
             $table->string('site_copyright');
 
