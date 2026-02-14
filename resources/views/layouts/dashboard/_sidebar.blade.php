@@ -115,7 +115,7 @@
                 </li>
             @endcan
 
-            {{-- <li class="nav-item"><a href="javascript:void(0)"><i class="la la-cart-arrow-down"></i><span
+             <li class="nav-item"><a href="javascript:void(0)"><i class="la la-cart-arrow-down"></i><span
                         class="menu-title" data-i18n="nav.dash.main">{{ __('dashboard.products') }}</span><span
                         class="badge badge badge-info badge-pill float-right mr-2">10</span></a>
                 <ul class="menu-content">
@@ -133,7 +133,7 @@
                         </li>
                     @endcan
                 </ul>
-            </li> --}}
+            </li>
 
             {{-- @can('orders')
                 <li class="nav-item"><a href="javascript:void(0)"><i class="la la-cart-arrow-down"></i><span
@@ -146,7 +146,7 @@
                     </ul>
                 </li>
 
-            @endcan --}}
+            @endcan --}
 
             {{-- <li class=" navigation-header">
                 <span data-i18n="nav.category.layouts">{{ __('dashboard.system') }}</span><i
@@ -164,7 +164,7 @@
                     </ul>
                 </li>
             @endcan --}}
-            {{-- @can('faqs') --}}
+            @can('faqs')
                 <li class=" nav-item"><a href="index.html"><i class="la la-info"></i><span class="menu-title"
                             data-i18n="nav.dash.main">{{ __('dashboard.faqs') }}</span><span
                             class="badge badge badge-info badge-pill float-right mr-2">{{ $faqs_count }}</span></a>
@@ -177,9 +177,9 @@
                         </li>
                     </ul>
                 </li>
-            {{-- @endcan --}}
+            @endcan
 
-            {{-- <li class=" nav-item"><a href="javascipt:void(0)"><i class="la la-gears"></i><span class="menu-title"
+            <li class=" nav-item"><a href="javascipt:void(0)"><i class="la la-gears"></i><span class="menu-title"
                         data-i18n="nav.dash.main">{{ __('dashboard.settings') }}</span></a>
                 <ul class="menu-content">
                     @can('settings')
@@ -187,14 +187,14 @@
                                 data-i18n="nav.dash.ecommerce">{{ __('dashboard.settings') }}</a>
                         </li>
                     @endcan
-                    @can('sliders')
+                    {{-- @can('sliders')
                         <li><a class="menu-item" href="{{ route('dashboard.sliders.index') }}"
                                 data-i18n="nav.dash.ecommerce">{{ __('dashboard.sliders') }}</a>
                         </li>
-                    @endcan
+                    @endcan --}}
 
                 </ul>
-            </li> --}}
+            </li>
             {{-- @can('pages')
                 <li class=" nav-item"><a href="javascipt:void(0)"><i class="la la-folder-open-o"></i><span
                             class="menu-title" data-i18n="nav.dash.main">{{ __('dashboard.pages') }}</span></a>

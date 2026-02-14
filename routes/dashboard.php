@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 Route::group([
-    'prefix' => LaravelLocalization::setLocale().'/dashboard',
+    'prefix' => LaravelLocalization::setLocale() . '/dashboard',
     'as' => 'dashboard.'
 ], function () {
 
@@ -25,52 +25,67 @@ Route::group([
         Route::get('admins/{id}/status', [App\Http\Controllers\Dashboard\AdminController::class, 'changeStatus'])->name('admins.status')->middleware('can:admins');
 
         ############################ Shipping & Countries ##########################
-            Route::group(['middleware' => 'can:shipping'], function () {
-                Route::controller(App\Http\Controllers\Dashboard\WorldController::class)->group(function () {
+        Route::group(['middleware' => 'can:shipping'], function () {
+            Route::controller(App\Http\Controllers\Dashboard\WorldController::class)->group(function () {
 
-                    Route::prefix('countries')->name('countries.')->group(function () {
-                        Route::get('/',                              'getAllCountries')->name('index');
-                        Route::get('/{country_id}/governorates',     'getGovsByCountry')->name('governorates.index');
-                        Route::get('/change-status/{country_id}',    'changeStatus')->name('status');
-                    });
+                Route::prefix('countries')->name('countries.')->group(function () {
+                    Route::get('/',                              'getAllCountries')->name('index');
+                    Route::get('/{country_id}/governorates',     'getGovsByCountry')->name('governorates.index');
+                    Route::get('/change-status/{country_id}',    'changeStatus')->name('status');
+                });
 
-                    Route::prefix('governorates')->name('governorates.')->group(function () {
-                        Route::get('/change-status/{gov_id}',       'changeGovStatus')->name('status');
-                        Route::put('/shipping-price',               'changeShippingPrice')->name('shipping-price');
-                    });
+                Route::prefix('governorates')->name('governorates.')->group(function () {
+                    Route::get('/change-status/{gov_id}',       'changeGovStatus')->name('status');
+                    Route::put('/shipping-price',               'changeShippingPrice')->name('shipping-price');
                 });
             });
-            ############################### End Shipping ###############################
+        });
+        ############################### End Shipping ###############################
 
-            ############################ categories ##########################
+        ############################ categories ##########################
 
-            Route::group(['middleware'=> ['can:categories']], function () {
+        Route::group(['middleware' => ['can:categories']], function () {
             Route::resource('categories', App\Http\Controllers\Dashboard\CategoryController::class);
-            Route::get('categories-all' , [App\Http\Controllers\Dashboard\CategoryController::class,'getAll'])->name('categories.all');
-});
-            ############################ end categories ##########################
+            Route::get('categories-all', [App\Http\Controllers\Dashboard\CategoryController::class, 'getAll'])->name('categories.all');
+        });
+        ############################ end categories ##########################
 
-            ############################ brands ##########################
-            Route::group(['middleware'=> ['can:brands']], function () {
-                Route::resource('brands', App\Http\Controllers\Dashboard\BrandController::class);
-                Route::get('brands-all' , [App\Http\Controllers\Dashboard\BrandController::class,'getAll'])->name('brands.all');
-            });
-            ############################ end brands ##########################
-             ############################ coupons ##########################
-            Route::group(['middleware'=> ['can:coupons']], function () {
-                Route::resource('coupons', App\Http\Controllers\Dashboard\CouponController::class)->except(['create','show']);
-                Route::get('coupons-all' , [App\Http\Controllers\Dashboard\CouponController::class,'getAll'])->name('coupons.all');
-                Route::post('changeStatus/{id}' , [App\Http\Controllers\Dashboard\CouponController::class,'changeStatus'])->name('coupons.change_status');
+        ############################ brands ##########################
+        Route::group(['middleware' => ['can:brands']], function () {
+            Route::resource('brands', App\Http\Controllers\Dashboard\BrandController::class);
+            Route::get('brands-all', [App\Http\Controllers\Dashboard\BrandController::class, 'getAll'])->name('brands.all');
+        });
+        ############################ end brands ##########################
+        ############################ coupons ##########################
+        Route::group(['middleware' => ['can:coupons']], function () {
+            Route::resource('coupons', App\Http\Controllers\Dashboard\CouponController::class)->except(['create', 'show']);
+            Route::get('coupons-all', [App\Http\Controllers\Dashboard\CouponController::class, 'getAll'])->name('coupons.all');
+            Route::post('changeStatus/{id}', [App\Http\Controllers\Dashboard\CouponController::class, 'changeStatus'])->name('coupons.change_status');
+        });
+        //add can faqs
+        Route::group(['middleware' => ['can:faqs']], function () {
+            Route::resource('faqs', App\Http\Controllers\Dashboard\FaqController::class)->except(['create', 'show', 'edit']);
+        });
+        ############################ end coupons ##########################
+        ############################ Settings Route ##########################
+        Route::resource('settings', App\Http\Controllers\Dashboard\SettingController::class)->only(['index', 'update'])->middleware('can:settings');
+        ############################ End Settings Route ##########################
 
-            });
-            //add can faqs
-               Route::group(['middleware'=> ['can:coupons']], function () {
-                Route::resource('faqs', App\Http\Controllers\Dashboard\FaqController::class)->except(['create','show','edit']);
+        ######################### Attributes & Attribute Values ##########################
+        Route::group(['middleware' => 'can:attributes'], function () {
+            Route::resource('attributes', App\Http\Controllers\Dashboard\AttributeController::class);
+            Route::get('attributes-all', [App\Http\Controllers\Dashboard\AttributeController::class, 'getAll'])->name('attributes.all');
+        });
+        ######################### End Attributes & Attribute Values ##########################
 
-            });
-            ############################ end coupons ##########################
-        // Settings Route
-        Route::resource('settings', App\Http\Controllers\Dashboard\SettingController::class)->only(['index','update'])->middleware('can:settings');
+        ############################ products ##########################
+
+        Route::group(['middleware' => ['can:products']], function () {
+            Route::resource('products', App\Http\Controllers\Dashboard\ProductController::class);
+            Route::get('products-all', [App\Http\Controllers\Dashboard\ProductController::class, 'getAll'])->name('products.all');
+        });
+        ############################ end products ##########################
+
 
     });
 });

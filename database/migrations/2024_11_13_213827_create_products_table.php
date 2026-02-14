@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('small_desc');
             $table->longText('desc');
             $table->boolean('status')->default(1);
-            $table->string('sku');
+$table->string('sku')->unique()->nullable();
             $table->date('available_for')->nullable();
             $table->integer('views')->default(0); // edit
 
@@ -32,7 +32,7 @@ return new class extends Migration
 
             $table->boolean('manage_stock')->default(0);
             $table->integer('quantity')->nullable();// if has Variants it will be null
-            $table->integer('available_in_stock')->default(1);
+$table->boolean('available_in_stock')->default(1);
 
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->foreignId('brand_id')->constrained('brands')->onDelete('cascade');
