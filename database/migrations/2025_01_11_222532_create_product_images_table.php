@@ -16,7 +16,10 @@ return new class extends Migration
             $table->string('file_name');
             $table->string('file_size')->nullable();
             $table->string('file_type')->nullable();
+            $table->boolean('is_main')->default(0);
             $table->foreignId('product_id')->constrained('products')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->index('product_id');
+
         });
     }
 

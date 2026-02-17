@@ -14,15 +14,14 @@ class ImageManager
         self::storeImageInLocal($file_name, $path, $image, $disk);
         return $file_name;
     }
-    public function uploadImages($images, $model, $disk)
+    public function uploadImages($images, $model, $disk , $mainImageIndex = null)
     {
-        foreach ($images as $image) {
-
+        foreach ($images as $index => $image) {
             $file_name = $this->generateUniqueName($image);
             $this->storeImageInLocal($file_name, '/', $image, $disk);
-
             $model->images()->create([
                 'file_name' => $file_name,
+                'is_main' => ($index === $mainImageIndex) ? 1 : 0,
             ]);
         }
     }

@@ -17,29 +17,39 @@ class ProductService
         $this->productRepository = $productRepository;
         $this->imageManager = $imageManager;
     }
-     public function createProductWithDetails($ProductData, $productVariant, $images)
+
+
+    public function createProductWithDetails($ProductData, $productVariant, $images, $mainImageIndex, $tags)
     {
-        // dd($ProductData, $productVariant, $images);
-        // create Product
-        // dd($ProductData);
+        // Create Product
         $product = $this->productRepository->createProduct($ProductData);
-        // create Product Variant
+
+        // Create Product Variants
         foreach ($productVariant as $variant) {
-
             $variant['product_id'] = $product->id;
-            $productVariant = $this->productRepository->createProductVariant($variant);
+            $createdVariant = $this->productRepository->createProductVariant($variant);
 
-            // create Variant Attributes
-            foreach ($variant['attriubte_value_ids'] as $attribute_value_id) {
-                $this->productRepository->createProductVariantAttribute([
-                    'product_variant_id' => $productVariant->id,
-                    'attribute_value_id' => $attribute_value_id,
-                ]);
+            // Filter and sync attribute values (removes empty values)
+            $attributeIds = array_filter(
+                $variant['attribute_value_ids'] ?? [],
+                fn($id) => !empty($id) && is_numeric($id)
+            );
+
+            if (!empty($attributeIds)) {
+                $createdVariant->attributeValues()->sync(array_values($attributeIds));
             }
         }
-        // dd($images);
 
-        // create Product Images
-        $this->imageManager->uploadImages($images, $product, 'products');
+        // Create Product Tags
+        if (!empty($tags)) {
+            $this->productRepository->createProuctTags($tags, $product);
+        }
+
+        // Upload Product Images
+        if (!empty($images)) {
+            $this->imageManager->uploadImages($images, $product, 'products', $mainImageIndex);
+        }
+
+        return $product;
     }
 }

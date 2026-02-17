@@ -10,6 +10,7 @@ class ProductImage extends Model
         'file_name',
         'file_size',
         'file_type',
+        'is_main',
         'product_id',
     ];
     public $timestamps= false;

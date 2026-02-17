@@ -3,7 +3,9 @@
 namespace App\Repositories\Dashboard;
 
 use App\Models\Product;
+use App\Models\ProductTag;
 use App\Models\ProductVariant;
+use App\Models\Tag;
 use App\Models\VariantAttribute;
 
 class ProductRepository
@@ -15,7 +17,7 @@ class ProductRepository
     {
         //
     }
-     public function createProduct($data)
+    public function createProduct($data)
     {
         return Product::create($data);
     }
@@ -23,8 +25,23 @@ class ProductRepository
     {
         return ProductVariant::create($data);
     }
-      public function createProductVariantAttribute($data)
+    public function createProductVariantAttribute($data)
     {
         return VariantAttribute::create($data);
+    }
+    public function createProuctTags($data, $product)
+    {
+      foreach ($data as $tagSlug) {
+            $tag = $this->createOrGetTag($tagSlug, $product);
+        }
+    }
+    public function createOrGetTag($tagSlug, $product)
+    {
+        $tag = Tag::where('slug', $tagSlug)->first();
+        if (!$tag) {
+            $tag = Tag::create(['slug' => $tagSlug]);
+        }
+        $product->tags()->attach($tag->id);
+        return $tag;
     }
 }

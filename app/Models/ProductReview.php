@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProductPreview extends Model
+class ProductReview extends Model
 {
     protected $fillable = [
         'comment',
+        'rating',
         'product_id',
         'user_id',
     ];

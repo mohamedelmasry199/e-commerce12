@@ -13,11 +13,22 @@ return new class extends Migration
     {
         Schema::create('product_variants', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
-            $table->decimal('price', 10, 2);
-            $table->integer('stock');
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+
             $table->string('sku')->unique();
+            $table->decimal('price', 10, 2);
+
+            $table->boolean('manage_stock')->default(1);
+            $table->integer('stock')->default(0);
+
+            $table->boolean('has_discount')->default(0);
+            $table->decimal('discount', 5, 2)->nullable();
+            $table->date('start_discount')->nullable();
+            $table->date('end_discount')->nullable();
+
             $table->timestamps();
+            $table->index('stock');
+
         });
     }
 

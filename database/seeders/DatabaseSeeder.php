@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Admin;
 use App\Models\Role;
 use App\Models\User;
+use Dom\Attr;
 use Illuminate\Container\Attributes\DB;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -27,10 +28,15 @@ class DatabaseSeeder extends Seeder
 $this->call([
             RoleSeeder::class,
             AdminSeeder::class,
+            AttributeSeeder::class,
+            CouponSeeder::class,
             CountrySeeder::class,
             GovernorateSeeder::class,
             CitySeeder::class,
-
+            CategorySeeder::class,
+            BrandSeeder::class,
+            FaqSeeder::class,
+    
         ]);
     }
 }
