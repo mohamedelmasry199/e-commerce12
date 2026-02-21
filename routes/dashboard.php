@@ -83,6 +83,11 @@ Route::group([
         Route::group(['middleware' => ['can:products']], function () {
             Route::resource('products', App\Http\Controllers\Dashboard\ProductController::class);
             Route::get('products-all', [App\Http\Controllers\Dashboard\ProductController::class, 'getAll'])->name('products.all');
+            Route::post('change-status', [App\Http\Controllers\Dashboard\ProductController::class, 'changeStatus'])->name('products.status');
+            Route::delete('destroy/{id}', [App\Http\Controllers\Dashboard\ProductController::class, 'delete'])->name('products.destroy');
+
+
+
         });
         ############################ end products ##########################
 

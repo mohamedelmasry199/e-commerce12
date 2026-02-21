@@ -57,6 +57,16 @@ class Product extends Model
             ? __('dashboard.active')
             : __('dashboard.inactive');
     }
+    public function getNameTranslated(){
+        return $this->getTranslation('name', app()->getLocale());
+    }
+
+    public function getSmallDescTranslated(){
+        return $this->getTranslation('small_desc', app()->getLocale());
+    }
+    public function getDescTranslated(){
+        return $this->getTranslation('desc', app()->getLocale());
+    }
     public function getHasVariantsTranslated()
     {
         return $this->has_variants == 1

@@ -42,6 +42,9 @@ public function getStatusTranslated(): string{
         return $this->status == '1'?'مفعل': 'غير مفعل';
     }
 }
+ public function getNameTranslated(){
+        return $this->getTranslation('name', app()->getLocale());
+    }
     public function getCreatedAtAttribute($created_at){
         return Carbon::parse($created_at);
     }
@@ -59,4 +62,5 @@ public function children(){
 public function parent(){
     return $this->belongsTo(Category::class,'parent');
 }
+
 }

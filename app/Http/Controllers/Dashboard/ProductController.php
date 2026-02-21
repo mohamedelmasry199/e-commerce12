@@ -5,17 +5,30 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Services\Dashboard\ProductService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    protected $productService;
     /**
      * Display a listing of the resource.
      */
+    public function __construct(ProductService $productService)
+    {
+        $this->productService = $productService;
+    }
     public function index()
     {
-        //
+        return view('dashboard.products.index');
     }
+    public function getAll()
+    {
+        $products = $this->productService->getAllProducts();
+        return $products;
+    }
+
+
 
     /**
      * Show the form for creating a new resource.

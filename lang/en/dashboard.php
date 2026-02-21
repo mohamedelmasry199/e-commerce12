@@ -474,6 +474,7 @@ return [
     'invalid_format' => 'Invalid format',
     'min_value' => 'Minimum value is :min',
     'max_value' => 'Maximum value is :max',
+    'stock_not_managed'=>'Stock management is disabled for this variant - it will always be available'
 
 
 

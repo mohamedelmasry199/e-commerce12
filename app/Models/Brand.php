@@ -32,5 +32,8 @@ class Brand extends Model
     public function getLogoAttribute($logo){
         return 'uploads/brands/'.$logo;
     }
+     public function getNameTranslated(){
+        return $this->getTranslation('name', app()->getLocale());
+    }
 
 }

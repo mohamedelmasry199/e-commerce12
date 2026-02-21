@@ -17,6 +17,10 @@ class ProductRepository
     {
         //
     }
+    public function getAllProducts()
+    {
+        return Product::with(['brand', 'category', 'variants.attributeValues', 'tags','images'])->get();
+    }
     public function createProduct($data)
     {
         return Product::create($data);
