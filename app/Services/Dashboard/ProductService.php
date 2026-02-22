@@ -25,9 +25,9 @@ class ProductService
             ->addColumn('name', function ($product) {
                 return $product->getNameTranslated();
             })
-            ->addColumn('small_desc', function ($product) {
-                return $product->getSmallDescTranslated();
-            })
+            // ->addColumn('small_desc', function ($product) {
+            //     return $product->getSmallDescTranslated();
+            // })
                 ->addColumn('status', function ($product) {
                     return $product->getStatusTranslated();
                 })
@@ -65,9 +65,9 @@ class ProductService
                     return $product->variants->first()->sku ?? 'N/A';
                 }
             })
-            ->addColumn('tags', function ($product) {
-                return $product->tags->pluck('slug')->implode(', ');
-            })
+            // ->addColumn('tags', function ($product) {
+            //     return $product->tags->pluck('slug')->implode(', ');
+            // })
             ->addColumn('images', function ($product) {
                 return view('dashboard.products.datatables.images', compact('product'));
             })
@@ -116,5 +116,29 @@ class ProductService
         }
 
         return $product;
+    }
+    public function getProductByIdWithEagerLoading($id)
+    {
+        return $this->productRepository->getProductByIdWithEagerLoading($id);
+    }
+    public function getProductById($id)
+    {
+        return $this->productRepository->getProductById($id);
+    }
+    public function changeStatus($id)
+    {
+        $product =$this->productRepository->getProductById($id);
+        if (!$product){
+           return false;
+       }
+        return $this->productRepository->changeStatus($product);
+    }
+    public function deleteProduct($id)
+    {
+        $product = $this->productRepository->getProductById($id);
+        if (!$product){
+           return false;
+       }
+        return $this->productRepository->deleteProduct($product);
     }
 }

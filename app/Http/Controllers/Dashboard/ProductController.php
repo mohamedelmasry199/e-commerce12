@@ -77,6 +77,49 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+       $product = $this->productService->deleteProduct($id);
+        if (!$product){
+            return response()->json(
+                ['status'=>'error',
+                'message'=>__('dashboard.error_msg')],
+                500
+            );
+        }
+        return response()->json([
+            'status' => 'success',
+            'message' => __('dashboard.success_msg'),
+        ], 200);
+    }
+    public function delete(string $id)
+    {
+       $product = $this->productService->deleteProduct($id);
+        if (!$product){
+            return response()->json(
+                ['status'=>'error',
+                'message'=>__('dashboard.error_msg')],
+                500
+            );
+        }
+        return response()->json([
+            'status' => 'success',
+            'message' => __('dashboard.success_msg'),
+        ], 200);
+    }
+    public function changeStatus(Request $request)
+    {
+        $product = $this->productService->changeStatus($request->id);
+         if (!$product){
+            return response()->json(
+                ['status'=>'error',
+                'message'=>__('dashboard.error_msg')],
+                500
+            );
+        }
+
+        return response()->json([
+            'status'=>'success',
+            'message'=>__('dashboard.success_msg'),
+        ],200);
+        return response()->json(['message' => 'Product status changed successfully']);
     }
 }

@@ -21,6 +21,14 @@ class ProductRepository
     {
         return Product::with(['brand', 'category', 'variants.attributeValues', 'tags','images'])->get();
     }
+    public function getProductByIdWithEagerLoading($id)
+    {
+        return Product::with(['brand', 'category', 'variants.attributeValues', 'tags','images'])->findOrFail($id);
+    }
+    public function getProductById($id)
+    {
+        return Product::findOrFail($id);
+    }
     public function createProduct($data)
     {
         return Product::create($data);
@@ -48,4 +56,17 @@ class ProductRepository
         $product->tags()->attach($tag->id);
         return $tag;
     }
+    public function changeStatus($product)
+    {
+        $product->status = !$product->status;
+        $product->save();
+        return $product;
+    }
+    public function deleteProduct($product)
+    {
+        
+        return $product->delete();
+    }
 }
+
+

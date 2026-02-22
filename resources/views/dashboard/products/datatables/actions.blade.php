@@ -1,24 +1,26 @@
-<div class="form-group">
-    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+{{-- ── Action Buttons ────────────────────────────────────────────────── --}}
+<div class="product-actions">
 
-        <a href="{{ route('dashboard.products.edit', $product->id) }}" class="edit_coupon btn btn-outline-success">
-            {{ __('dashboard.edit') }} <i class="la la-edit"></i>
-        </a>
+    <a href="{{ route('dashboard.products.edit', $product->id) }}"
+       class="btn btn-outline-success btn-sm">
+        <i class="la la-edit"></i> {{ __('dashboard.edit') }}
+    </a>
 
+    <button type="button"
+            product-id="{{ $product->id }}"
+            class="btn btn-outline-info btn-sm status_btn">
+        <i class="la la-toggle-on"></i> {{ __('dashboard.status_management') }}
+    </button>
 
-        <button product-id="{{ $product->id }}"  type="button" class="btn btn-outline-info status_btn">
-            {{ __('dashboard.status_management') }} <i class="la la-stop"></i>
-        </button>
-        <a href="{{ route('dashboard.products.show', $product->id) }}" class="btn btn-outline-primary ">
-            {{ __('dashboard.show_product') }} <i class="la la-eye"></i>
-        </a>
+    <a href="{{ route('dashboard.products.show', $product->id) }}"
+       class="btn btn-outline-primary btn-sm">
+        <i class="la la-eye"></i> {{ __('dashboard.show_product') }}
+    </a>
 
+    <button type="button"
+            product-id="{{ $product->id }}"
+            class="delete_confirm_btn btn btn-outline-danger btn-sm">
+        <i class="la la-trash"></i> {{ __('dashboard.delete') }}
+    </button>
 
-        <button id="btnGroupDrop2" product-id="{{ $product->id }}" type="button"
-            class="delete_confirm_btn btn btn-outline-danger">
-            {{ __('dashboard.delete') }}<i class="la la-trash"></i>
-        </button>
-
-
-    </div>
 </div>
