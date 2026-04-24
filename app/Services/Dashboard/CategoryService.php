@@ -36,6 +36,10 @@ class CategoryService
          )
         ->make(true);
     }
+    public function getAllCategories(){
+        $categories = $this->categoryRepository->getAll();
+        return $categories;
+    }
     public function getParentCategories(){
         $categories = $this->categoryRepository->getParentCategories();
         return $categories;

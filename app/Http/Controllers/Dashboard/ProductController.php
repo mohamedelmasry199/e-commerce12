@@ -5,18 +5,24 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Services\Dashboard\BrandService;
+use App\Services\Dashboard\CategoryService;
 use App\Services\Dashboard\ProductService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     protected $productService;
+    protected $categoryService;
+    protected $brandService;
     /**
      * Display a listing of the resource.
      */
-    public function __construct(ProductService $productService)
+    public function __construct(ProductService $productService ,CategoryService $categoryService, BrandService $brandService)
     {
         $this->productService = $productService;
+        $this->categoryService = $categoryService;
+        $this->brandService = $brandService;
     }
     public function index()
     {
@@ -35,8 +41,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
-        $brands = Brand::all();
+        $categories = $this->categoryService->getAllCategories();
+        $brands = $this->brandService->getAllBrands();
         return view('dashboard.products.create', compact('categories', 'brands'));
     }
 
@@ -53,17 +59,20 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-    }
 
+public function edit($id)
+    {
+        $product    = $this->productService->getProductByIdWithEagerLoading($id);
+        $categories = $this->categoryService->getAllCategories();
+        $brands     = $this->brandService->getAllBrands();
+        return view('dashboard.products.edit', compact('product', 'categories', 'brands'));
+    }
     /**
      * Update the specified resource in storage.
      */

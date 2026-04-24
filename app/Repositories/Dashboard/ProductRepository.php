@@ -67,6 +67,35 @@ class ProductRepository
         
         return $product->delete();
     }
+    
+    public function updateProduct($product, $data)
+    {
+        $product->update($data);
+        return $product;
+    }
+    
+    public function deleteProductVariants($productId)
+    {
+        return ProductVariant::where('product_id', $productId)->delete();
+    }
+    
+    public function syncProductTags($product, $tagSlugs)
+    {
+        $tagIds = [];
+        foreach ($tagSlugs as $tagSlug) {
+            $tag = Tag::firstOrCreate(['slug' => $tagSlug]);
+            $tagIds[] = $tag->id;
+        }
+        $product->tags()->sync($tagIds);
+    }
+    
+    public function deleteProductImages($productId)
+    {
+        $product = Product::findOrFail($productId);
+        foreach ($product->images as $image) {
+            $image->delete();
+        }
+    }
 }
 
 
