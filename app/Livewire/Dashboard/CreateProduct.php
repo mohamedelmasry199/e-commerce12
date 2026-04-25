@@ -376,18 +376,7 @@ foreach (($this->prices ?? []) as $i => $price){
      */
     public function submitForm()
     {
-    //       protected $fillable = [
-    //     'name',
-    //     'slug',
-    //     'small_desc',
-    //     'desc',
-    //     'status',
-    //     'available_for',
-    //     'views',
-    //     'has_variants',
-    //     'category_id',
-    //     'brand_id',
-    // ];
+
 
         // Prepare product data
         $product = [
@@ -405,30 +394,11 @@ foreach (($this->prices ?? []) as $i => $price){
             ],
             'category_id' => $this->category_id,
             'brand_id' => $this->brand_id,
-            // 'sku' => $this->has_variants == 0 ? $this->sku : null,
             'available_for' => $this->available_for,
             'has_variants' => $this->has_variants,
-            // 'price' => $this->has_variants == 1 ? null : $this->price,
-            // 'manage_stock' => $this->manage_stock,
-            // 'quantity' => ($this->manage_stock == 0 || $this->has_variants == 1) ? null : $this->quantity,
-            // 'has_discount' => $this->has_discount,
-            // 'discount' => $this->has_discount == 0 ? null : $this->discount,
-            // 'start_discount' => $this->has_discount == 0 ? null : $this->start_discount,
-            // 'end_discount' => $this->has_discount == 0 ? null : $this->end_discount,
+
         ];
 
-        // Prepare variants data
-        //     protected $fillable = [
-    //     'product_id',
-    //     'price',
-    //     'manage_stock',
-    //     'stock',
-    //     'sku',
-    //     'has_discount',
-    //     'discount',
-    //     'start_discount',
-    //     'end_discount',
-    // ];
         $productVariants = [];
         if ($this->has_variants) {
             foreach ($this->prices as $index => $price) {
@@ -452,7 +422,7 @@ foreach (($this->prices ?? []) as $i => $price){
                 'price' => $this->price,
                 'sku' => $this->sku,
                 'manage_stock' => $this->manage_stock,
-                'stock' => $this->manage_stock == 1 ? $this->quantity : null,
+                'stock' => $this->manage_stock == 1 ? $this->quantity : 0,
                 'attribute_value_ids' => [],
                 'has_discount' => $this->has_discount,
                 'discount' => $this->has_discount == 1 ? $this->discount : null,
