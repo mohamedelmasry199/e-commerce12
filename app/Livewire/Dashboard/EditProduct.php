@@ -106,7 +106,7 @@ class EditProduct extends Component
         // Existing images
         $this->existingImages = $product->images->map(fn($img) => [
             'id'      => $img->id,
-            'url'     => asset('storage/' . $img->path),
+            'url'     => asset('uploads/products/' . $img->file_name),
             'is_main' => $img->is_main,
         ])->toArray();
 
@@ -522,7 +522,7 @@ class EditProduct extends Component
         $product = $this->productService->getProductByIdWithEagerLoading($this->productId);
         $this->existingImages = $product->images->map(fn($img) => [
             'id'      => $img->id,
-            'url'     => asset('storage/' . $img->path),
+            'url'     => asset('uploads/products/' . $img->file_name),
             'is_main' => $img->is_main,
         ])->toArray();
 
