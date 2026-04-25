@@ -490,7 +490,7 @@ class EditProduct extends Component
                 'price'               => $this->price,
                 'sku'                 => $this->sku,
                 'manage_stock'        => $this->manage_stock,
-                'stock'               => $this->manage_stock == 1 ? $this->quantity : null,
+                'stock'               => $this->manage_stock == 1 ? $this->quantity : 0,
                 'attribute_value_ids' => [],
                 'has_discount'        => $this->has_discount,
                 'discount'            => $this->has_discount == 1 ? $this->discount : null,
