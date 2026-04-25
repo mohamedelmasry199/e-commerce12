@@ -4,6 +4,7 @@ namespace App\Services\Dashboard;
 
 use App\Utils\ImageManager;
 use App\Repositories\Dashboard\ProductRepository;
+use Illuminate\Support\Facades\DB;
 
 class ProductService
 {
@@ -83,39 +84,47 @@ class ProductService
             ->make(true);
     }
 
-
+//add transactions for create and update
     public function createProductWithDetails($ProductData, $productVariant, $images, $mainImageIndex, $tags)
     {
         // Create Product
-        $product = $this->productRepository->createProduct($ProductData);
 
-        // Create Product Variants
-        foreach ($productVariant as $variant) {
-            $variant['product_id'] = $product->id;
-            $createdVariant = $this->productRepository->createProductVariant($variant);
+         DB::beginTransaction();
+        try {
+             $product = $this->productRepository->createProduct($ProductData);
 
-            // Filter and sync attribute values (removes empty values)
-            $attributeIds = array_filter(
-                $variant['attribute_value_ids'] ?? [],
-                fn($id) => !empty($id) && is_numeric($id)
-            );
+            // Create Product Variants
+            foreach ($productVariant as $variant) {
+                $variant['product_id'] = $product->id;
+                $createdVariant = $this->productRepository->createProductVariant($variant);
 
-            if (!empty($attributeIds)) {
-                $createdVariant->attributeValues()->sync(array_values($attributeIds));
+                // Filter and sync attribute values (removes empty values)
+                $attributeIds = array_filter(
+                    $variant['attribute_value_ids'] ?? [],
+                    fn($id) => !empty($id) && is_numeric($id)
+                );
+
+                if (!empty($attributeIds)) {
+                    $createdVariant->attributeValues()->sync(array_values($attributeIds));
+                }
             }
-        }
 
-        // Create Product Tags
-        if (!empty($tags)) {
-            $this->productRepository->createProuctTags($tags, $product);
-        }
+            // Create Product Tags
+            if (!empty($tags)) {
+                $this->productRepository->createProuctTags($tags, $product);
+            }
 
-        // Upload Product Images
-        if (!empty($images)) {
-            $this->imageManager->uploadImages($images, $product, 'products', $mainImageIndex);
-        }
+            // Upload Product Images
+            if (!empty($images)) {
+                $this->imageManager->uploadImages($images, $product, 'products', $mainImageIndex);
+            }
 
-        return $product;
+            DB::commit();
+            return $product;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e; // or handle the exception as needed
+        }
     }
     public function getProductByIdWithEagerLoading($id)
     {
@@ -219,6 +228,8 @@ class ProductService
         $imagesToDelete,        // array of existing image IDs to remove
         $existingMainIndex      // int|null  — index into $existingImages that should be main
     ) {
+        DB::beginTransaction();
+        try {
         $product = $this->productRepository->getProductById($productId);
 
         // 1. Update basic info
@@ -278,8 +289,12 @@ class ProductService
                 $product->images()->where('id', $survivingIds[$existingMainIndex])->update(['is_main' => 1]);
             }
         }
-
-        return $product;
+            DB::commit();
+            return $product;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 
 }

@@ -85,6 +85,7 @@ Route::group([
             Route::get('products-all', [App\Http\Controllers\Dashboard\ProductController::class, 'getAll'])->name('products.all');
             Route::post('change-status', [App\Http\Controllers\Dashboard\ProductController::class, 'changeStatus'])->name('products.status');
             Route::delete('destroy/{id}', [App\Http\Controllers\Dashboard\ProductController::class, 'delete'])->name('products.destroy');
+            Route::delete('variants_delete',[App\Http\Controllers\Dashboard\ProductController::class, 'deleteVariant'])->name('products.variants.delete');
 
 
 

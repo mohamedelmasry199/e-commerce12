@@ -59,7 +59,9 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        
+        $product = $this->productService->getProductByIdWithEagerLoading($id);
+        return view('dashboard.products.show', compact('product'));
+
     }
 
     /**

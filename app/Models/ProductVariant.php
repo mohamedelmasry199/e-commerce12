@@ -47,7 +47,7 @@ class ProductVariant extends Model
         }
         if($this->start_discount != null && $this->end_discount != null){
             $now = now();
-            if($now->isBetween($this->start_discount, $this->end_discount)){
+            if($now->betweenIncluded($this->start_discount, $this->end_discount)){
                 return $this->price - $this->discount ;
             }
         }
@@ -58,9 +58,9 @@ class ProductVariant extends Model
     {
         return $this->has_variants == 0 ? number_format($this->price, 2) : __("dashboard.has_variants");
     }
-    public function quantityAttribute()
+    public function stockAttribute()
     {
-        return $this->has_variants == 0 ? $this->quantity : __("dashboard.has_variants");
+        return $this->has_variants == 0 ? $this->stock : __("dashboard.has_variants");
     }
     //other methods
     public function discountPrecentage(){
@@ -68,5 +68,11 @@ class ProductVariant extends Model
             return '🔥';
         }
         return round(($this->discount / $this->price) * 100, 2).' %';
+    }
+    public function isAvailable(){
+        if($this->manage_stock == 0){
+            return true;
+        }
+        return $this->stock > 0;
     }
 }
