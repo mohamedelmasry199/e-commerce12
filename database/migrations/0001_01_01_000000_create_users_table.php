@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreignId('country_id')->constrained('countries')->cascadeOnDelete();
             $table->foreignId('governorate_id')->constrained('governorates')->cascadeOnDelete();
             $table->foreignId('city_id')->constrained('cities')->cascadeOnDelete();
+            $table->boolean('is_active')->default(true);
+            $table->string('phone')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

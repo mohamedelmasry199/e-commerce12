@@ -76,10 +76,10 @@
                     </ul>
                 </li>
             @endcan
-            {{-- @can('users')
+            @can('users')
                 <li class=" nav-item"><a href="#"><i class="la la-users"></i><span class="menu-title"
                             data-i18n="nav.templates.main">{{ __('dashboard.users') }}</span><span
-                            class="badge badge badge-info badge-pill float-right mr-2">{{ $admins_count }}</span></a>
+                            class="badge badge badge-info badge-pill float-right mr-2">{{ $users_count }}</span></a>
                     <ul class="menu-content">
                         <li>
                             <a class="menu-item" href="{{ route('dashboard.users.index') }}"
@@ -87,7 +87,7 @@
                         </li>
                     </ul>
                 </li>
-            @endcan --}}
+            @endcan
             {{-- @can('global_shipping')
                 <li class=" nav-item"><a href="#"><i class="la la-ambulance"></i><span class="menu-title"
                             data-i18n="nav.templates.main"> {{ __('dashboard.shipping') }} </span></a>
@@ -153,7 +153,7 @@
                     class="la la-ellipsis-h ft-minus" data-toggle="tooltip" data-placement="right"
                     data-original-title="Layouts"></i>
             </li> --}}
-            {{-- @can('contacts')
+            @can('contacts')
                 <li class=" nav-item"><a href="index.html"><i class="la la-phone"></i><span class="menu-title"
                             data-i18n="nav.dash.main">{{ __('dashboard.contacts') }}</span><span
                             class="badge badge badge-info badge-pill float-right mr-2">{{ $contacts_count }}</span></a>
@@ -163,7 +163,7 @@
                         </li>
                     </ul>
                 </li>
-            @endcan --}}
+            @endcan
             @can('faqs')
                 <li class=" nav-item"><a href="index.html"><i class="la la-info"></i><span class="menu-title"
                             data-i18n="nav.dash.main">{{ __('dashboard.faqs') }}</span><span

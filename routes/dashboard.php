@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\WorldController;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -91,7 +92,22 @@ Route::group([
 
         });
         ############################ end products ##########################
+        ############################ users ##########################
+          Route::group(['middleware' => 'can:users'], function () {
+                Route::resource('users', App\Http\Controllers\Dashboard\UserController::class);
+                Route::post('users/status', [App\Http\Controllers\Dashboard\UserController::class, 'changeStatus'])
+                    ->name('users.status');
+                Route::get('users-all', [App\Http\Controllers\Dashboard\UserController::class, 'getAll'])
+                    ->name('users.all');
+            });
+        ############################ end users ##########################
 
+         ############################ contacts ##########################
+          Route::group(['middleware' => 'can:contacts'], function () {
+                Route::get('contacts',[ App\Http\Controllers\Dashboard\ContactController::class, 'index'])->name('contacts.index');
+                Route::get('contacts-all', [App\Http\Controllers\Dashboard\ContactController::class, 'getAll'])->name('contacts.all');
+                Route::post('contacts/status', [App\Http\Controllers\Dashboard\ContactController::class, 'changeStatus'])->name('contacts.status');
+                ######################## end contacts ##########################
 
     });
 });
