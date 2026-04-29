@@ -2,101 +2,105 @@
 
 namespace App\Services\Dashboard;
 
-use Yajra\DataTables\Facades\DataTables;
+use App\Mail\ReplayContactMail;
+use Illuminate\Support\Facades\Mail;
 use App\Repositories\Dashboard\ContactRepository;
 
 class ContactService
 {
-     /**
-     * Create a new class instance.
-     */
-    protected $userRepository;
-    public function __construct(ContactRepository $userRepository)
+    protected $contactRepository;
+    public function __construct(ContactRepository $contactRepository)
     {
-        $this->userRepository = $userRepository;
-    }
-    public function getContactsForDatatable()
-    {
-        $users = $this->userRepository->getAll();
-        return DataTables::of($users)
-        ->addIndexColumn()
-        ->addColumn('is_active' , function ($user){
-            return $user->getStatusTranslated();
-        })
-        ->addColumn('country' , function($user){
-            return $user->country->name;
-        })
-        ->addColumn('governorate' , function($user){
-            return $user->governorate->name;
-        })
-        ->addColumn('city' , function($user){
-            return $user->city->name;
-        })
-        // ->addColumn('num_of_orders' , function($user){
-        //     return $user->orders()->count() > 0 ? $user->orders()->count() : __('dashboard.not_found');
-        // })
-         ->addColumn('num_of_orders' , function($user){
-            return 0;
-        })
-        ->addColumn('action', function ($user) {
-           return view('dashboard.users.datatables.actions'  ,compact('user'));
-        })
-
-        ->make(true);
-    }
-    public function getContact($id)
-    {
-        $user = $this->userRepository->getContact($id);
-        if(!$user){
-           return false;
-        }
-        return $user;
+        $this->contactRepository = $contactRepository;
     }
 
-    public function storeContact($data)
+    public function getMarkReadContacts($keyword = null)
     {
-        $user = $this->userRepository->storeContact($data);
-        if(!$user){
-            return false;
-        }
-        return $user;
-
+        return $this->contactRepository->getMarkReadContacts($keyword);
     }
-
-    public function updateContact($data, $id)
+    public function getUnreadContacts($keyword = null)
     {
-        $user = $this->userRepository->getContact($id);
-        if(!$user){
-            abort(404);
-        }
-        if($data['password'] == null){
-            unset($data['password']);
-        }
-
-        $user = $this->userRepository->updateContact($data,$user);
-        if(!$user){
-            return false;
-        }
-        return $user;
+        return $this->contactRepository->getMarkUnreadContacts($keyword);
     }
-
+    public function getInboxContacts($keyword = null)
+    {
+        return $this->contactRepository->getInboxContacts($keyword);
+    }
+    public function getAnsweredContacts($keyword = null)
+    {
+        return $this->contactRepository->getAnsweredContacts($keyword);
+    }
+    public function getTrashedContacts($keyword = null)
+    {
+        return $this->contactRepository->getTrashedContacts($keyword);
+    }
+    public function getContactById($id)
+    {
+        $contact = $this->contactRepository->getContactById($id);
+        return $contact ?? false;
+    }
     public function deleteContact($id)
     {
-        $user = $this->userRepository->getContact($id);
-        if(!$user){
+        $contact = $this->getContactById($id);
+        if (!$contact) {
             return false;
         }
-        return $this->userRepository->destroy($user);
-
+        return $this->contactRepository->deleteContact($contact);
     }
-
-    public function changeStatus($id)
+    public function markAsRead($id)
     {
-        $user = $this->userRepository->getContact($id);
-        if(!$user){
+        $contact = $this->getContactById($id);
+        if (!$contact) {
             return false;
         }
-        $user->is_active == 1? $status = 0 : $status = 1;
-        return $this->userRepository->changeStatus($user, $status);
+        return $this->contactRepository->markRead($contact);
+    }
+    public function markUnread($id)
+    {
+        $contact = $this->getContactById($id);
+        if (!$contact) {
+            return false;
+        }
+        return $this->contactRepository->markUnread($contact);
+    }
+    public function restoreContact($id)
+    {
+        $contact = $this->getContactById($id);
+        if (!$contact) {
+            return false;
+        }
+        return $this->contactRepository->restoreContact($contact);
+    }
+    public function forceDeleteContact($id)
+    {
+        $contact = $this->getContactById($id);
+        if (!$contact) {
+            return false;
+        }
+        return $this->contactRepository->forceDeleteContact($contact);
+    }
+    public function deleteAllReadedContacts()
+    {
+        return $this->contactRepository->deleteAllReadedContacts();
+    }
+    public function markAllAsRead()
+    {
+        return $this->contactRepository->markAllAsRead();
+    }
+    public function deleteAllAnsweredContacts()
+    {
+        return $this->contactRepository->deleteAllAnsweredContacts();
+    }
+    public function latestContact()
+    {
+        return $this->contactRepository->latestContact();
+    }
+    public function replayContact($contactId, $replayMessage)
+    {
+        $contact = $this->getContactById($contactId);
+        Mail::to($contact->email)->send(new ReplayContactMail($contact->name, $replayMessage, $contact->subject));
+
+        //mark as read to contact
+        return true;
     }
 }

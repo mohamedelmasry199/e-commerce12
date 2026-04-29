@@ -6,35 +6,73 @@ use App\Models\Contact;
 
 class ContactRepository
 {
-    public function getAll()
-    {
-        return Contact::get();
-    }
-    public function getUser($id)
-    {
-        return Contact::find($id);
-    }
 
-    public function storeUser($data)
+    public function getMarkReadContacts($keyword = null)
     {
-       return Contact::create($data);
+        return Contact::searchContact($keyword)->read()->latest();
     }
-
-    public function updateUser($data, $contact)
+    public function getMarkUnreadContacts($keyword = null)
     {
-        return $contact->update($data);
+        return Contact::searchContact($keyword)->unread()->latest();
     }
-
-    public function destroy($contact)
+    public function getAnsweredContacts($keyword = null)
+    {
+        return Contact::searchContact($keyword)->answered()->latest();
+    }
+    public function getInboxContacts($keyword = null)
+    {
+        return Contact::searchContact($keyword)->latest();
+    }
+    public function getTrashedContacts($keyword = null)
+    {
+        return Contact::searchContact($keyword)->onlyTrashed()->latest();
+    }
+    public function getContactById($id)
+    {
+        return Contact::withTrashed()->find($id);
+    }
+    public function deleteContact($contact)
     {
         return $contact->delete();
     }
-
-    public function changeStatus($contact , $status)
+    public function deleteAllReadedContacts()
     {
-        return $contact->update([
-            'is_active'=>$status,
-        ]);
+        return Contact::read()->delete();
     }
-
+    public function markAllAsRead()
+    {
+        $contacts = Contact::get();
+        foreach ($contacts as $contact) {
+            $contact->is_read = 1;
+            $contact->save();
+        }
+        return true;
+    }
+    public function deleteAllAnsweredContacts()
+    {
+        return Contact::answered()->delete();
+    }
+    public function markRead($contact)
+    {
+        $contact->is_read = 1;
+        $contact->save();
+    }
+    public function markUnread($contact)
+    {
+        $contact->is_read = 0;
+        $contact->save();
+    }
+    public function latestContact()
+    {
+        return Contact::latest()->first();
+    }
+    // sofDeletes
+    public function restoreContact($contact)
+    {
+        return $contact->restore();
+    }
+    public function forceDeleteContact($contact)
+    {
+        return $contact->forceDelete();
+    }
 }

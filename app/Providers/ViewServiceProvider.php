@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Admin;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Contact;
 use App\Models\Coupon;
 use App\Models\Faq;
 use App\Models\Setting;
@@ -59,6 +60,11 @@ class ViewServiceProvider extends ServiceProvider
                     return Faq::count();
                 });
             }
+            if (!Cache::has('contacts_count')) {
+                Cache::remember('contacts_count', 60, function () {
+                    return Contact::count();
+                });
+            }
 
 
 
@@ -73,6 +79,7 @@ class ViewServiceProvider extends ServiceProvider
                 'users_count' => Cache::get('users_count'),
                 'coupons_count' => Cache::get('coupons_count'),
                 'faqs_count' => Cache::get('faqs_count'),
+                'contacts_count' => Cache::get('contacts_count'),
 
             ]);
         });

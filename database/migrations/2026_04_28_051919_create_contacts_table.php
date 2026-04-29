@@ -22,6 +22,7 @@ return new class extends Migration
             $table->timestamp('read_at')->nullable();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
+            
         });
     }
 
