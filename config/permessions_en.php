@@ -2,7 +2,7 @@
 
 return [
 
-   'admins'=>'Manage Admins',
+    'admins'=>'Manage Admins',
     'categories'=>'Manage Categories',
     'brands'=>'Manage Brands',
     'coupons'=>'Manage Coupons',
@@ -28,6 +28,7 @@ return [
 
     'attributes'=>'Product Attributes',
     'contacts'=>'Manage Contacts',
+    'sliders'=>'Manage Slider',
     'pages'=>'Manage Pages',
 
 ];

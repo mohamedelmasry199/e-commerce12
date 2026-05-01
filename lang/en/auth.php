@@ -29,6 +29,26 @@ return [
         'The provided credentials do not match our records.'=>'The provided credentials do not match our records.',
         'The provided password is incorrect.'=>'The provided password is incorrect.',
         'Too many login attempts. Please try again in :seconds seconds.'=>'Too many login attempts. Please try again in :seconds seconds.',
-        ''
+        '',
+    'email_address' => 'Email Address',
+    'email_placeholder' => 'Enter email',
+    'password' => 'Password',
+    'password_placeholder' => 'Enter password',
+    'remember_me' => 'Remember Me',
+    'forgot_password' => 'Forgot password?',
+    'login_button' => 'Log In',
+    'dont_have_account' => "Don't have an account?",
+    'register' => 'Register',
+       'create_account' => 'Create Account',
 
+    'full_name' => 'Full Name',
+
+    'phone' => 'Phone',
+
+
+    'agree_terms' => 'I agree to all terms and conditions',
+
+    'create_account_btn' => 'Create an Account',
+
+    'already_have_account' => 'Already have an account?',
 ];
