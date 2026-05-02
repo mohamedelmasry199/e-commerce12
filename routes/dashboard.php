@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard\SliderController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\WorldController;
 use Illuminate\Support\Facades\Route;
@@ -108,6 +109,14 @@ Route::group([
                 Route::get('contacts-all', [App\Http\Controllers\Dashboard\ContactController::class, 'getAll'])->name('contacts.all');
                 Route::post('contacts/status', [App\Http\Controllers\Dashboard\ContactController::class, 'changeStatus'])->name('contacts.status');
                 ######################## end contacts ##########################
+############################### Sliders Routes ##############################
+            Route::group(['middleware' => 'can:sliders'], function () {
+                Route::get('sliders',         [SliderController::class, 'index'])->name('sliders.index');
+                Route::post('sliders',        [SliderController::class, 'store'])->name('sliders.store');
+                Route::get('sliders-all',     [SliderController::class, 'getAll'])->name('sliders.all');
+                Route::get('remove/{id}',     [SliderController::class, 'destroy'])->name('sliders.delete');
+            });
+            ############################### End Sliders ################################
 
     });
 });

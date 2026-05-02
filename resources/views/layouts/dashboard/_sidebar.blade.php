@@ -4,7 +4,7 @@
 
 
             @can('categories')
-                <li class=" nav-item"><a href="index.html"><i class="la la-folder"></i><span class="menu-title"
+                <li class=" nav-item"><a href="{{ route('dashboard.categories.index') }}"><i class="la la-folder"></i><span class="menu-title"
                             data-i18n="nav.dash.main">{{ __('dashboard.categories') }}</span>
                             <span
                             class="badge badge badge-info badge-pill float-right mr-2">{{ $categories_count }}
@@ -23,7 +23,7 @@
             @endcan
 
             @can('brands')
-                <li class=" nav-item"><a href="index.html"><i class="la la-check-square"></i><span class="menu-title"
+                <li class=" nav-item"><a href="{{ route('dashboard.brands.index') }}"><i class="la la-check-square"></i><span class="menu-title"
                             data-i18n="nav.dash.main">{{ __('dashboard.brands') }}</span>
                             <span
                             class="badge badge badge-info badge-pill float-right mr-2">{{ $brands_count }}
@@ -42,7 +42,7 @@
             @endcan
 
             @can('roles')
-                <li class=" nav-item"><a href="#"><i class="la la-unlock-alt"></i><span class="menu-title"
+                <li class=" nav-item"><a href="{{ route('dashboard.roles.index') }}"><i class="la la-unlock-alt"></i><span class="menu-title"
                             data-i18n="nav.templates.main">{{ __('dashboard.roles') }}</span></a>
                     <ul class="menu-content">
                         <li>
@@ -58,7 +58,7 @@
             @endcan
 
             @can('admins')
-                <li class=" nav-item"><a href="#"><i class="la la-user-secret"></i><span class="menu-title"
+                <li class=" nav-item"><a href="{{ route('dashboard.admins.index') }}"><i class="la la-user-secret"></i><span class="menu-title"
                             data-i18n="nav.templates.main">{{ __('dashboard.admins') }}</span>
                             <span
                             class="badge badge badge-info badge-pill float-right mr-2">{{ $admins_count }}
@@ -77,7 +77,7 @@
                 </li>
             @endcan
             @can('users')
-                <li class=" nav-item"><a href="#"><i class="la la-users"></i><span class="menu-title"
+                <li class=" nav-item"><a href="{{ route('dashboard.users.index') }}"><i class="la la-users"></i><span class="menu-title"
                             data-i18n="nav.templates.main">{{ __('dashboard.users') }}</span><span
                             class="badge badge badge-info badge-pill float-right mr-2">{{ $users_count }}</span></a>
                     <ul class="menu-content">
@@ -102,7 +102,7 @@
             @endcan--}}
 
             @can('coupons')
-                <li class=" nav-item"><a href="index.html"><i class="la la-500px"></i><span class="menu-title"
+                <li class=" nav-item"><a href="{{ route('dashboard.coupons.index') }}"><i class="la la-500px"></i><span class="menu-title"
                             data-i18n="nav.dash.main">{{ __('dashboard.coupons') }}</span><span
                             class="badge badge badge-info badge-pill float-right mr-2">{{ $coupons_count }}</span></a>
                     <ul class="menu-content">
@@ -154,7 +154,7 @@
                     data-original-title="Layouts"></i>
             </li> --}}
             @can('contacts')
-                <li class=" nav-item"><a href="index.html"><i class="la la-phone"></i><span class="menu-title"
+                <li class=" nav-item"><a href="{{ route('dashboard.contacts.index') }}"><i class="la la-phone"></i><span class="menu-title"
                             data-i18n="nav.dash.main">{{ __('dashboard.contacts') }}</span><span
                             class="badge badge badge-info badge-pill float-right mr-2">{{ $contacts_count }}</span></a>
                     <ul class="menu-content">
@@ -165,7 +165,7 @@
                 </li>
             @endcan
             @can('faqs')
-                <li class=" nav-item"><a href="index.html"><i class="la la-info"></i><span class="menu-title"
+                <li class=" nav-item"><a href="{{ route('dashboard.faqs.index') }}  "><i class="la la-info"></i><span class="menu-title"
                             data-i18n="nav.dash.main">{{ __('dashboard.faqs') }}</span><span
                             class="badge badge badge-info badge-pill float-right mr-2">{{ $faqs_count }}</span></a>
                     <ul class="menu-content">
@@ -187,11 +187,11 @@
                                 data-i18n="nav.dash.ecommerce">{{ __('dashboard.settings') }}</a>
                         </li>
                     @endcan
-                    {{-- @can('sliders')
+                    @can('sliders')
                         <li><a class="menu-item" href="{{ route('dashboard.sliders.index') }}"
                                 data-i18n="nav.dash.ecommerce">{{ __('dashboard.sliders') }}</a>
                         </li>
-                    @endcan --}}
+                    @endcan
 
                 </ul>
             </li>

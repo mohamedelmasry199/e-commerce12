@@ -21,3 +21,4 @@ Route::group([
     });
 
 });
+include('dashboard.php');

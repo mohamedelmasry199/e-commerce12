@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Slider;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -24,6 +25,7 @@ class HomeController extends Controller
     public function index()
     {
         $user = auth()->user();
-        return view('website.index', compact('user'));
+        $sliders = Slider::all();
+        return view('website.index', compact('user', 'sliders'));
     }
 }
