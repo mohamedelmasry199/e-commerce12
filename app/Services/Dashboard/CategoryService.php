@@ -4,19 +4,23 @@ namespace App\Services\Dashboard;
 
 use App\Models\Category;
 use App\Repositories\Dashboard\CategoryRepository;
+use App\Utils\ImageManager;
 use Illuminate\Support\Facades\Cache;
 use Yajra\DataTables\Facades\DataTables;
 
 class CategoryService
 {
+
     /**
      * Create a new class instance.
      */
-    protected $categoryRepository;
-    public function __construct(CategoryRepository $categoryRepository)
+    protected $categoryRepository , $imageManager;
+     public function __construct(CategoryRepository $categoryRepository , ImageManager $imageManager)
     {
         $this->categoryRepository = $categoryRepository;
+        $this->imageManager = $imageManager;
     }
+
     public function getCategoriesForDataTable(){
         $categories = $this->categoryRepository->getAll();
          return DataTables::of($categories)
@@ -30,7 +34,10 @@ class CategoryService
 
         }
         )
-         ->addColumn("action", function ($category) {
+        ->addColumn('icon', function (Category $category) {
+            return view('dashboard.categories.datatables.icon', compact('category'));
+         })
+        ->addColumn("action", function ($category) {
             return view('dashboard.categories.datatables.actions', compact('category'));
          }
          )
@@ -45,6 +52,10 @@ class CategoryService
         return $categories;
     }
     public function createCategory($data){
+         if(array_key_exists('icon', $data)  && $data['icon'] != null){
+            $file_name = $this->imageManager->uploadSingleImage('/' , $data['icon'] , 'categories');
+            $data['icon'] = $file_name;
+        }
         $category = $this->categoryRepository->createCategory($data);
         $this->removeFromCache();
         return $category;
@@ -59,6 +70,11 @@ public function getParentCategoriesExceptThis($id){
 }
 public function updateCategory($id, $data){
     $category = $this->categoryRepository->findById($id);
+        if(array_key_exists('icon', $data)  && $data['icon'] != null){
+               $this->imageManager->deleteImageFromLocal($category->icon);
+                $file_name = $this->imageManager->uploadSingleImage('/' , $data['icon'] , 'categories');
+                $data['icon'] = $file_name;
+            }
     if(!$category){
         return false;
     }
@@ -69,6 +85,7 @@ public function deleteCategory($id){
     if(!$category){
         return false;
     }
+    $this->imageManager->deleteImageFromLocal($category->icon);
     $category = $this->categoryRepository->deleteCategory($category);
     $this->removeFromCache();
     return $category;

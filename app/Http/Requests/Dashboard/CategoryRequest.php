@@ -25,6 +25,7 @@ class CategoryRequest extends FormRequest
         return [
             'name.*'=>['required','string','max:100' ,UniqueTranslationRule::for('categories')->ignore($this->id) ],
             'status'=>['required','in:0,1'],
+            'icon'=>['nullable','image','mimes:jpg,jpeg,png'],
             'parent'=>['nullable','exists:categories,id'],
         ];
     }

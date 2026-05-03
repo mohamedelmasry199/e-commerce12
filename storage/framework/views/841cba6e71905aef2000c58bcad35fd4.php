@@ -1,24 +1,22 @@
-@extends('layouts.dashboard.app')
+<?php $__env->startSection('title'); ?>
+    <?php echo e(__('dashboard.categories')); ?>
 
+<?php $__env->stopSection(); ?>
 
-@section('title')
-    {{ __('dashboard.categories') }}
-@endsection
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="app-content content">
         <div class="content-wrapper">
             <div class="content-header row">
                 <div class="content-header-left col-md-6 col-12 mb-2 breadcrumb-new">
-                    <h3 class="content-header-title mb-0 d-inline-block">{{ __('dashboard.categories_table') }}</h3>
+                    <h3 class="content-header-title mb-0 d-inline-block"><?php echo e(__('dashboard.categories_table')); ?></h3>
                     <div class="row breadcrumbs-top d-inline-block">
                         <div class="breadcrumb-wrapper col-12">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a
-                                        href="{{ route('dashboard.index') }}">{{ __('dashboard.dashboard') }}</a>
+                                        href="<?php echo e(route('dashboard.index')); ?>"><?php echo e(__('dashboard.dashboard')); ?></a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="{{ route('dashboard.categories.index') }}">
-                                        {{ __('dashboard.categories') }}</a>
+                                <li class="breadcrumb-item"><a href="<?php echo e(route('dashboard.categories.index')); ?>">
+                                        <?php echo e(__('dashboard.categories')); ?></a>
                                 </li>
 
 
@@ -26,7 +24,7 @@
                         </div>
                     </div>
                 </div>
-                @include('dashboard.includes.button-header')
+                <?php echo $__env->make('dashboard.includes.button-header', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
             </div>
             <div class="row" style="display: flex; justify-content: center;">
                 <div class="col-md-11">
@@ -34,7 +32,8 @@
                         <div class="card">
                             <div class="card-header">
                                 <h4 class="card-title" id="basic-layout-colored-form-control">
-                                    {{ __('dashboard.categories') }}
+                                    <?php echo e(__('dashboard.categories')); ?>
+
                                 </h4>
                                 <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                                 <div class="heading-elements">
@@ -49,39 +48,39 @@
 
                             <div class="card-content">
                                 <div class="card-body">
-                                    <a href="{{ route('dashboard.categories.create') }}" class="btn btn-outline-success ">{{ __('dashboard.create_category') }}</a>
+                                    <a href="<?php echo e(route('dashboard.categories.create')); ?>" class="btn btn-outline-success "><?php echo e(__('dashboard.create_category')); ?></a>
 
-                                    {{-- alert --}}
-                                    @include('dashboard.includes.tostar-success')
-                                    @include('dashboard.includes.tostar-error')
+                                    
+                                    <?php echo $__env->make('dashboard.includes.tostar-success', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                                    <?php echo $__env->make('dashboard.includes.tostar-error', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
 
-                                    <p class="card-text">{{ __('dashboard.table_yajra_paragraph') }}.</p>
+                                    <p class="card-text"><?php echo e(__('dashboard.table_yajra_paragraph')); ?>.</p>
                                     <table id="yajra_table" class="table table-striped table-bordered language-file">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>{{ __('dashboard.name') }}</th>
-                                                <th>{{ __('dashboard.status') }}</th>
-                                                {{-- <th>{{ __('dashboard.products_count') }}</th>--}}
-                                                <th>{{ __('dashboard.icon') }}</th>
-                                                <th>{{ __('dashboard.created_at') }}</th>
-                                                <th>{{ __('dashboard.actions') }}</th>
+                                                <th><?php echo e(__('dashboard.name')); ?></th>
+                                                <th><?php echo e(__('dashboard.status')); ?></th>
+                                                
+                                                <th><?php echo e(__('dashboard.icon')); ?></th>
+                                                <th><?php echo e(__('dashboard.created_at')); ?></th>
+                                                <th><?php echo e(__('dashboard.actions')); ?></th>
                                             </tr>
                                         </thead>
 
                                         <body>
-                                            {{-- empty --}}
+                                            
                                         </body>
                                         <tfoot>
                                             <tr>
                                                 <th>#</th>
-                                                <th>{{ __('dashboard.name') }}</th>
-                                                <th>{{ __('dashboard.status') }}</th>
-                                                {{-- <th>{{ __('dashboard.products_count') }}</th>--}}
-                                                <th>{{ __('dashboard.icon') }}</th>
-                                                <th>{{ __('dashboard.created_at') }}</th>
-                                                <th>{{ __('dashboard.actions') }}</th>
+                                                <th><?php echo e(__('dashboard.name')); ?></th>
+                                                <th><?php echo e(__('dashboard.status')); ?></th>
+                                                
+                                                <th><?php echo e(__('dashboard.icon')); ?></th>
+                                                <th><?php echo e(__('dashboard.created_at')); ?></th>
+                                                <th><?php echo e(__('dashboard.actions')); ?></th>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -94,14 +93,14 @@
             </div>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('js')
+<?php $__env->startPush('js'); ?>
 
     <script>
     $(document).ready(function() {
 
-        let lang = "{{ app()->getLocale() }}";
+        let lang = "<?php echo e(app()->getLocale()); ?>";
 
         $('#yajra_table').DataTable({
             processing: true,
@@ -130,7 +129,7 @@ scrollX: true,
                 }
             },
 
-            ajax: "{{ route('dashboard.categories.all') }}",
+            ajax: "<?php echo e(route('dashboard.categories.all')); ?>",
 
             columns: [
                 { data: 'DT_RowIndex', searchable: false, orderable: false },
@@ -241,4 +240,6 @@ scrollX: true,
     });
 </script>
 
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.dashboard.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\my laravel projects\e-commerce paid\e-commerce12\resources\views/dashboard/categories/index.blade.php ENDPATH**/ ?>

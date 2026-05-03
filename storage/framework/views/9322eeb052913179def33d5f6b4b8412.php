@@ -1,0 +1,2 @@
+<img src="<?php echo e(asset($category->icon)); ?>" alt="<?php echo e($category->name); ?>" class="img-fluid" width="50px" height="50px">
+<?php /**PATH D:\my laravel projects\e-commerce paid\e-commerce12\resources\views/dashboard/categories/datatables/icon.blade.php ENDPATH**/ ?>

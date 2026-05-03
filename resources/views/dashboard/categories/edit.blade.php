@@ -54,7 +54,6 @@
       action="{{ route('dashboard.categories.update', $category->id) }}"
       method="POST"
       enctype="multipart/form-data">
-
     @csrf
     @method('PUT')
 
@@ -82,11 +81,11 @@
                                                 </select>
                                             </div>
 
-                                            {{-- <div class="form-group">
+                                            <div class="form-group">
                                                 <label for="image">{{ __('dashboard.icon') }}</label>
                                                 <input type="file"  name="icon" class="form-control" id="single-image-edit"
                                                     placeholder="{{ __('dashboard.icon') }}">
-                                            </div> --}}
+                                            </div>
 
                                             <div class="form-group">
                                                 <label>{{ __('dashboard.status') }}</label>
@@ -123,7 +122,6 @@
     </div>
 
 @endsection
-{{-- @push('js')
 @push('js')
 <script>
     var lang = "{{ app()->getLocale() }}";
@@ -145,4 +143,3 @@
      });
 </script>
 @endpush
-@endpush --}}

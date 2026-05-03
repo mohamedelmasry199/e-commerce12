@@ -12,7 +12,7 @@ class Category extends Model
     use Sluggable , HasTranslations;
 
     protected $translatable = ["name"];
-    protected $fillable = ["name","slug","status","parent"];
+    protected $fillable = ["name","slug","status","parent","icon"];
     /**
      * Return the sluggable configuration array for this model.
      *
@@ -47,6 +47,9 @@ public function getStatusTranslated(): string{
     }
     public function getCreatedAtAttribute($created_at){
         return Carbon::parse($created_at);
+    }
+    public function getIconAttribute($icon){
+        return 'uploads/categories/'.$icon;
     }
 public function scopeActive($query)
 {

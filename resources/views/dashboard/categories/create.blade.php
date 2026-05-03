@@ -74,11 +74,11 @@
                                                 </select>
                                             </div>
 
-                                            {{-- <div class="form-group">
+                                            <div class="form-group">
                                                 <label for="image">{{ __('dashboard.icon') }}</label>
                                                 <input type="file"  name="icon" class="form-control" id="single-image"
                                                     placeholder="{{ __('dashboard.icon') }}">
-                                            </div> --}}
+                                            </div>
 
 
                                             <div class="form-group">

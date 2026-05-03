@@ -43,7 +43,8 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        $data = $request->only(['name','status','parent']);
+        $data = $request->only(['name','status','parent', 'icon']);
+
         $category = $this->categoryService->createCategory($data);
         if(!$category){
             Session::flash('error' , __('dashboard.error_msg'));
@@ -81,7 +82,7 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request , string $id)
     {
-        $data = $request->only(['name','status','parent']);
+        $data = $request->only(['name','status','parent','icon']);
         $category = $this->categoryService->updateCategory($request->id, $data);
         if(!$category){
             Session::flash('error' , __('dashboard.error_msg'));
