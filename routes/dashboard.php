@@ -118,6 +118,11 @@ Route::group([
             });
             ############################### End Sliders ################################
 
+            ############################### Pages Routes ##############################
+              Route::resource('pages', App\Http\Controllers\Dashboard\PageController::class);
+            Route::get('pages-all', [App\Http\Controllers\Dashboard\PageController::class, 'getAll'])->name('pages.all');
+            Route::post('change-status', [App\Http\Controllers\Dashboard\PageController::class, 'changeStatus'])->name('pages.status');
+                ############################### End Pages ################################
     });
 });
 });
