@@ -1,4 +1,4 @@
-<?php $__env->startSection('title','login'); ?>
+<?php $__env->startSection('title', __('website.login')); ?>
 
 <?php $__env->startSection('content'); ?>
 <section class="login footer-padding">
@@ -6,7 +6,7 @@
     <div class="login-section">
       <div class="review-form">
 
-        <h5 class="comment-title">Log In</h5>
+        <h5 class="comment-title"><?php echo e(__('website.login')); ?></h5>
 
         <form method="POST" action="<?php echo e(route('login')); ?>">
           <?php echo csrf_field(); ?>
@@ -15,7 +15,11 @@
 
             
             <div class="review-form-name">
-              <label for="email" class="form-label">Email Address**</label>
+              <label for="email" class="form-label">
+                <?php echo e(__('auth.email_address')); ?>
+
+              </label>
+
               <input
                 type="email"
                 id="email"
@@ -28,7 +32,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                placeholder="Email"
+                placeholder="<?php echo e(__('auth.email_placeholder')); ?>"
                 value="<?php echo e(old('email')); ?>"
                 required
                 autofocus
@@ -50,7 +54,11 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
 
             
             <div class="review-form-name">
-              <label for="password" class="form-label">Password*</label>
+              <label for="password" class="form-label">
+                <?php echo e(__('auth.password')); ?>
+
+              </label>
+
               <input
                 type="password"
                 id="password"
@@ -63,7 +71,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                placeholder="Password"
+                placeholder="<?php echo e(__('auth.password_placeholder')); ?>"
                 required
               />
 
@@ -91,13 +99,18 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                   <?php echo e(old('remember') ? 'checked' : ''); ?>
 
                 />
-                <span class="address"> Remember Me</span>
+
+                <span class="address">
+                  <?php echo e(__('auth.remember_me')); ?>
+
+                </span>
               </div>
 
               <div class="forget-pass">
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(Route::has('password.request')): ?>
                   <a href="<?php echo e(route('password.request')); ?>">
-                    Forgot password?
+                    <?php echo e(__('auth.forgot_password')); ?>
+
                   </a>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
               </div>
@@ -108,13 +121,16 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
           
           <div class="login-btn text-center">
             <button type="submit" class="shop-btn">
-              Log In
+              <?php echo e(__('auth.login_button')); ?>
+
             </button>
 
             <span class="shop-account">
-              Don't have an account ?
+              <?php echo e(__('auth.dont_have_account')); ?>
+
               <a href="<?php echo e(route('register')); ?>">
-                Sign Up Free
+                <?php echo e(__('auth.register')); ?>
+
               </a>
             </span>
           </div>

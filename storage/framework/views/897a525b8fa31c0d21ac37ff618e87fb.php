@@ -83,7 +83,6 @@
                                                 <input type="file"  name="image" class="form-control" id="single-image"
                                                     placeholder="<?php echo e(__('dashboard.image')); ?>">
                                             </div>
-                                            //is_active
                                             <div class="form-group">
                                                 <label for="eventRegInput1"><?php echo e(__('dashboard.is_active')); ?></label>
                                                 <select name="is_active" class="form-control">
@@ -92,7 +91,6 @@
                                                 </select>
                                             </div>
 
-                                            // meta data
                                             <div class="form-group">
                                                 <label for="eventRegInput1"><?php echo e(__('dashboard.meta_title_ar')); ?></label>
                                                 <input type="text" value="<?php echo e(old('meta_title[ar]')); ?>" class="form-control"

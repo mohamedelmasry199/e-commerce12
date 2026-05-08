@@ -148,6 +148,9 @@
                         <li><a class="menu-item" href="<?php echo e(route('dashboard.faqs.index')); ?>"
                                 data-i18n="nav.dash.ecommerce"><?php echo e(__('dashboard.faq_questions')); ?></a>
                         </li>
+                        <li><a class="menu-item" href="<?php echo e(route('dashboard.faq.questions.index')); ?>"
+                                data-i18n="nav.dash.ecommerce"><?php echo e(__('dashboard.userFaqs')); ?></a>
+                        </li>
                     </ul>
                 </li>
             <?php endif; ?>
@@ -168,7 +171,20 @@
 
                 </ul>
             </li>
-            
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('pages')): ?>
+                <li class=" nav-item"><a href="javascipt:void(0)"><i class="la la-folder-open-o"></i><span
+                            class="menu-title" data-i18n="nav.dash.main"><?php echo e(__('dashboard.pages')); ?></span></a>
+                    <ul class="menu-content">
+                        <li><a class="menu-item" href="<?php echo e(route('dashboard.pages.index')); ?>"
+                                data-i18n="nav.dash.ecommerce"><?php echo e(__('dashboard.pages')); ?></a>
+                        </li>
+                        <li><a class="menu-item" href="<?php echo e(route('dashboard.pages.create')); ?>"
+                                data-i18n="nav.dash.ecommerce"><?php echo e(__('dashboard.create_page')); ?></a>
+                        </li>
+                    </ul>
+                </li>
+            <?php endif; ?>
+
 
 
 

@@ -8,8 +8,10 @@ use App\Models\Category;
 use App\Models\Contact;
 use App\Models\Coupon;
 use App\Models\Faq;
+use App\Models\Page;
 use App\Models\Setting;
 use App\Models\User;
+use App\Services\Website\PageService;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 
@@ -18,6 +20,7 @@ class ViewServiceProvider extends ServiceProvider
     /**
      * Register services.
      */
+    protected $pageService;
     public function register(): void
     {
         //
@@ -25,67 +28,36 @@ class ViewServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap services.
-     */
-    public function boot(): void
-    {
-        // share dashboad variables
-        view()->composer('dashboard.*', function ($view) {
-            if (!Cache::has('categories_count')) {
-                Cache::remember('categories_count', 60, function () {
-                    return Category::count();
-                });
-            }
-            if (!Cache::has('brands_count')) {
-                Cache::remember('brands_count', 60, function () {
-                    return Brand::count();
-                });
-            }
-            if (!Cache::has('admins_count')) {
-                Cache::remember('admins_count', 60, function () {
-                    return Admin::count();
-                });
-            }
-              if (!Cache::has('users_count')) {
-                Cache::remember('users_count', 60, function () {
-                    return User::count();
-                });
-            }
-            if (!Cache::has('coupons_count')) {
-                Cache::remember('coupons_count', 60, function () {
-                    return Coupon::count();
-                });
-            }
-            if (!Cache::has('faqs_count')) {
-                Cache::remember('faqs_count', 60, function () {
-                    return Faq::count();
-                });
-            }
-            if (!Cache::has('contacts_count')) {
-                Cache::remember('contacts_count', 60, function () {
-                    return Contact::count();
-                });
-            }
+     */public function boot(PageService $pageService): void
+{
+    view()->composer('dashboard.*', function ($view) {
+
+        $view->with([
+            'categories_count' => Cache::remember('categories_count', 60, fn() => Category::count()),
+            'brands_count'     => Cache::remember('brands_count', 60, fn() => Brand::count()),
+            'admins_count'     => Cache::remember('admins_count', 60, fn() => Admin::count()),
+            'users_count'      => Cache::remember('users_count', 60, fn() => User::count()),
+            'coupons_count'    => Cache::remember('coupons_count', 60, fn() => Coupon::count()),
+            'faqs_count'       => Cache::remember('faqs_count', 60, fn() => Faq::count()),
+            'contacts_count'   => Cache::remember('contacts_count', 60, fn() => Contact::count()),
+        ]);
+    });
+
+    view()->composer('website.*', function ($view) use ($pageService) {
+
+        $view->with([
+            'pages' => $pageService->getPages(),
+        ]);
+    });
+$setting = Cache::rememberForever('setting', function () {
+    return $this->firstOrCreateSetting();
+});
+    view()->share('setting', $setting);
+}
 
 
 
 
-
-
-
-            view()->share([
-                'categories_count' => Cache::get('categories_count'),
-                'brands_count' => Cache::get('brands_count'),
-                'admins_count' => Cache::get('admins_count'),
-                'users_count' => Cache::get('users_count'),
-                'coupons_count' => Cache::get('coupons_count'),
-                'faqs_count' => Cache::get('faqs_count'),
-                'contacts_count' => Cache::get('contacts_count'),
-
-            ]);
-        });
-        $setting = $this->firstOrCreateSetting();
-        view()->share('setting', $setting);
-    }
     private function firstOrCreateSetting()
     {
         $settings = Setting::firstOrCreate([], [
@@ -111,3 +83,4 @@ class ViewServiceProvider extends ServiceProvider
 
     }
 }
+

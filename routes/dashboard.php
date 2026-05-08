@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboard\FaqQuestionController;
 use App\Http\Controllers\Dashboard\SliderController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\WorldController;
@@ -123,6 +124,18 @@ Route::group([
             Route::get('pages-all', [App\Http\Controllers\Dashboard\PageController::class, 'getAll'])->name('pages.all');
             Route::post('change-status', [App\Http\Controllers\Dashboard\PageController::class, 'changeStatus'])->name('pages.status');
                 ############################### End Pages ################################
+                   ############################### Faqs Question Routes ##########################
+            Route::group(['middleware' => 'can:faqs'], function () {
+                Route::get('faq-questions', [FaqQuestionController::class, 'index'])->name('faq.questions.index');
+                Route::delete('faq-questions/{id}', [faqQuestionController::class, 'destroy'])->name('faq.questions.destroy');
+                Route::get('faq-questions-all', [faqQuestionController::class, 'getAll'])
+                    ->name('faq.questions.all');
+                Route::put('faq-questions/{id}', [faqQuestionController::class, 'reply'])->name('faq.questions.reply');
+                Route::get('faq-questions/reply/{id}', [faqQuestionController::class, 'showReplyForm'])->name('faq.question.replyForm');
+
+            });
+            ############################### End Faqs ######################################
+
     });
 });
 });

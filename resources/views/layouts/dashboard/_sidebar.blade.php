@@ -175,6 +175,9 @@
                         <li><a class="menu-item" href="{{ route('dashboard.faqs.index') }}"
                                 data-i18n="nav.dash.ecommerce">{{ __('dashboard.faq_questions') }}</a>
                         </li>
+                        <li><a class="menu-item" href="{{ route('dashboard.faq.questions.index') }}"
+                                data-i18n="nav.dash.ecommerce">{{ __('dashboard.userFaqs') }}</a>
+                        </li>
                     </ul>
                 </li>
             @endcan
@@ -195,7 +198,7 @@
 
                 </ul>
             </li>
-            {{-- @can('pages')
+            @can('pages')
                 <li class=" nav-item"><a href="javascipt:void(0)"><i class="la la-folder-open-o"></i><span
                             class="menu-title" data-i18n="nav.dash.main">{{ __('dashboard.pages') }}</span></a>
                     <ul class="menu-content">
@@ -207,7 +210,8 @@
                         </li>
                     </ul>
                 </li>
-            @endcan --}}
+            @endcan
+
 
 
 

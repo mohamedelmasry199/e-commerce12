@@ -1001,7 +1001,7 @@
                             </li>
                             <li>
                                 <a href="#">
-                                    <span class="list-text">Pages</span>
+                                    <span class="list-text"><?php echo e(__('website.pages')); ?></span>
                                     <span>
                                         <svg width="10" height="10" viewBox="0 0 10 10" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -1018,13 +1018,15 @@
                                         </svg>
                                     </span>
                                 </a>
+
                                 <ul class="header-sub-menu">
-                                    <li><a href="product-info.html">Product-details</a></li>
-                                    <li><a href="privacy.html">Privacy Policy</a></li>
-                                    <li><a href="terms.html">Terms & Condition</a></li>
-                                    <li><a href="faq.html">FAQ</a></li>
-                                    <li><a href="product-sidebar.html">Shop Category Icon</a></li>
-                                    <li><a href="product-sidebar.html">Shop List View</a></li>
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(isset($pages) && $pages->count() > 0): ?>
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $pages; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $page): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <li><a href="<?php echo e(route('website.page.show', $page->slug)); ?>"><?php echo e($page->title); ?></a></li>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                    <li><a href="<?php echo e(route('website.faqs.index')); ?>"><?php echo e(__('website.faq')); ?></a></li>
+
                                 </ul>
                             </li>
                             <li>

@@ -99,7 +99,6 @@ class ContactService
     {
         $contact = $this->getContactById($contactId);
         Mail::to($contact->email)->send(new ReplayContactMail($contact->name, $replayMessage, $contact->subject));
-
         //mark as read to contact
         return true;
     }
