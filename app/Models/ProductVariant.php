@@ -33,6 +33,10 @@ class ProductVariant extends Model
             'attribute_value_id'     // related key on pivot table
         )->withTimestamps();
     }
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class, 'variant_id');
+    }
 
        public function getHasDiscountTranslated()
     {
@@ -75,4 +79,17 @@ class ProductVariant extends Model
         }
         return $this->stock > 0;
     }
+    // In ProductVariant model
+public function scopeActiveDiscount($query)
+{
+    $now = now();
+    return $query->where('has_discount', 1)
+        ->where(function ($q) use ($now) {
+            $q->whereNull('start_discount')
+              ->orWhere(function ($q) use ($now) {
+                  $q->where('start_discount', '<=', $now)
+                    ->where('end_discount', '>=', $now);
+              });
+        });
+}
 }

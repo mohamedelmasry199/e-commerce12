@@ -46,6 +46,7 @@
     <script src="{{ asset('assets/website/assets/js/swiper10-bundle.min.js') }}"></script>
 
     <script src="{{ asset('assets/website/assets/js/shopus.js') }}"></script>
+    @stack('js')
 </body>
 
 

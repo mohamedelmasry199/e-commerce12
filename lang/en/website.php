@@ -87,6 +87,19 @@ return [
         'contact_stored_successfully'=>'Contact Stored Successfully',
         'try_again_latter'=>'Try Again Latter!',
         'write_a_review'=>'Write A Review',
+        'submit_review'=>'Submit Review',
+        'review_stored_successfully'=>'Review Stored Successfully',
+        'product_added_to_wishlist'=>'Product Added To Wishlist',
+        'product_removed_from_wishlist'=>'Product Removed From Wishlist',
+        'no_products'=>'No Products',
+        'wishlist'=>'Wishlist',
+        'my_account'=>'My Account',
+        'my_orders'=>'My Orders',
+        'my_addresses'=>'My Addresses',
+        'my_wishlist'=>'My Wishlist',
+        'my_cart'=>'My Cart',
+        'add_to_wishlist'=>'Add To Wishlist',
+        'remove_from_wishlist'=>'Remove From Wishlist',
 
 
 

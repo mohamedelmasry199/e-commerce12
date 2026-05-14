@@ -46,6 +46,7 @@
     <script src="<?php echo e(asset('assets/website/assets/js/swiper10-bundle.min.js')); ?>"></script>
 
     <script src="<?php echo e(asset('assets/website/assets/js/shopus.js')); ?>"></script>
+    <?php echo $__env->yieldPushContent('js'); ?>
 </body>
 
 

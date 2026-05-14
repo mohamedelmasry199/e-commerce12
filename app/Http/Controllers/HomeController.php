@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Product;
 use App\Models\Slider;
+use App\Services\Website\GeneralService;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -12,9 +16,11 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    protected $generalService;
+    public function __construct(GeneralService $generalService)
     {
-        $this->middleware('auth');
+        $this->generalService =$generalService;
+        // $this->middleware('auth');
     }
 
     /**
@@ -25,7 +31,18 @@ class HomeController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $sliders = Slider::all();
-        return view('website.index', compact('user', 'sliders'));
-    }
+        // $sliders = Slider::all();
+        $sliders = $this->generalService->getData(Slider::class);
+        $someCategories     = $this->generalService->getData(Category::class,12);
+        $someBrands         = $this->generalService->getData(Brand::class,12);
+        $homePageProducts   = $this->generalService->getHomePageProducts(12);
+        return view('website.index',[
+            'sliders'           => $sliders,
+            'someCategories'    => $someCategories,
+            'someBrands'        => $someBrands,
+            'homePageProducts'  => $homePageProducts,
+            'user'              => $user
+
+        ]);
+        }
 }
