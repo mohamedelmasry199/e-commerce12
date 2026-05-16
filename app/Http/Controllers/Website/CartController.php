@@ -5,15 +5,13 @@ namespace App\Http\Controllers\Website;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class WishlistController extends Controller
+class CartController extends Controller
 {
     /**
      * Handle the incoming request.
      */
     public function __invoke(Request $request)
     {
-        $wishlists = auth('web')->user()->wishlists()->with('product')->get();
-        return view('website.wishlist', compact('wishlists'));
+        return view('website.cart');
     }
-
 }

@@ -2,13 +2,14 @@
  
     <div class="price">
         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($product->isSimple()): ?>
-            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($product->firstVariant()->has_discount == 0): ?>
-                <span class="new-price"><?php echo e($product->firstVariant()->price); ?> EGP</span>
-            <?php else: ?>
-                <span class="price-cut"><?php echo e($product->firstVariant()->price); ?> EGP</span>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($product->firstVariant()->has_discount == 1 && $product->firstVariant()->start_discount <= now() &&$product->firstVariant()->end_discount >= now() &&$product->firstVariant()->price > 0): ?>
+              <span class="price-cut"><?php echo e($product->firstVariant()->price); ?> EGP</span>
                 <span class="new-price"><?php echo e($product->getPriceAfterDiscount()); ?>
 
                     EGP</span>
+            <?php else: ?>
+                <span class="new-price"><?php echo e($product->firstVariant()->price); ?> EGP</span>
+
             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         <?php else: ?>
          <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($discount == 0): ?>

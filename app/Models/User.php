@@ -79,21 +79,21 @@ class User extends Authenticatable
     //     return $this->hasMany(Order::class , 'user_id');
     // }
 
-    // public function wishlists()
-    // {
-    //     return $this->hasMany(Wishlist::class , 'user_id');
-    // }
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class , 'user_id');
+    }
 
     // // user & cart
-    // public function cart()
-    // {
-    //     return $this->hasOne(Cart::class , 'user_id');
-    // }
+    public function cart()
+    {
+        return $this->hasOne(Cart::class , 'user_id');
+    }
 
-    // public function reviews()
-    // {
-    //     return $this->hasMany(ProductPreview::class , 'user_id');
-    // }
+    public function reviews()
+    {
+        return $this->hasMany(ProductReview::class , 'user_id');
+    }
 
 
     // accessors

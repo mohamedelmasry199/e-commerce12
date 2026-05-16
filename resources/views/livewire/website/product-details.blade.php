@@ -2,12 +2,13 @@
  {{-- price --}}
     <div class="price">
         @if ($product->isSimple())
-            @if ($product->firstVariant()->has_discount == 0)
-                <span class="new-price">{{ $product->firstVariant()->price }} EGP</span>
-            @else
-                <span class="price-cut">{{ $product->firstVariant()->price }} EGP</span>
+            @if ($product->firstVariant()->has_discount == 1 && $product->firstVariant()->start_discount <= now() &&$product->firstVariant()->end_discount >= now() &&$product->firstVariant()->price > 0)
+              <span class="price-cut">{{ $product->firstVariant()->price }} EGP</span>
                 <span class="new-price">{{ $product->getPriceAfterDiscount() }}
                     EGP</span>
+            @else
+                <span class="new-price">{{ $product->firstVariant()->price }} EGP</span>
+
             @endif
         @else
          @if ($discount == 0)

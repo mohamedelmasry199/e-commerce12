@@ -3,11 +3,17 @@
 namespace App\Livewire\Website\Wishlist;
 
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 class WishlistIcon extends Component
 {
+    #[On('wishlistCountRefresh')]
     public function render()
     {
-        return view('livewire.website.wishlist.wishlist-icon');
+        $count = auth('web')->check() ? auth('web')->user()->wishlists()->count() : 0;
+
+        return view('livewire.website.wishlist.wishlist-icon',[
+            'wishlistsCount' => $count,
+        ]);
     }
 }

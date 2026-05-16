@@ -27,7 +27,7 @@ class ProductDetails extends Component
         $this->variantId = $variant?->id;
         $this->price     = $variant?->price;
         $this->quantity  = $variant?->stock;
-        $this->discount  = $variant?->has_discount ? $variant->discount : 0;
+        $this->discount  = $variant?->has_discount && $variant->start_discount <= now() && $variant->end_discount >= now() && $variant->price > 0 ? $variant->discount : 0;
 
         $this->checkWishlist();
     }
@@ -40,7 +40,7 @@ class ProductDetails extends Component
         $this->variantId = $variant->id;
         $this->price     = $variant->price;
         $this->quantity  = $variant->stock;
-        $this->discount  = $variant->has_discount ? $variant->discount : 0;
+        $this->discount  = $variant->has_discount && $variant->start_discount <= now() && $variant->end_discount >= now() && $variant->price > 0 ? $variant->discount : 0;
 
         $this->checkWishlist(); // ✅ re-check wishlist on variant change
     }
@@ -92,10 +92,10 @@ class ProductDetails extends Component
 
         if ($product->has_variants) {
             $variant = $product->variants->find($this->variantId);
-            return $variant->has_discount ? $variant->price - $variant->discount : $variant->price;
+            return $variant->has_discount && $variant->start_discount <= now() && $variant->end_discount >= now() && $variant->price > 0  ? $variant->price - $variant->discount : $variant->price;
         }
 
-        return $product->has_discount ? $product->price - $product->discount : $product->price;
+        return $product->firstVariant()->has_discount && $product->firstVariant()->start_discount <= now() && $product->firstVariant()->end_discount >= now() && $product->firstVariant()->price > 0 ? $product->firstVariant()->price - $product->firstVariant()->discount : $product->firstVariant()->price;
     }
 
     public function incrementCartQuantity() { $this->cartQuantity++; }

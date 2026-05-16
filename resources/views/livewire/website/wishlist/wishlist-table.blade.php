@@ -1,4 +1,5 @@
 <div>
+
     @if ($wishlists->count() > 0)
         <div class="container">
             <div class="cart-section wishlist-section">
@@ -29,16 +30,62 @@
                                                 alt="{{ $item->product->name }}" />
                                         </div>
                                         <div class="wrapper-content">
-                                            <h5 class="heading"><a href="{{ route('website.products.show', $item->product->slug) }}">{{ $item->product->name }}</a> </h5>
-                                        </div>
+
+    <h5 style="margin-bottom:10px; line-height:1.6;">
+        <a href="{{ route('website.products.show', $item->product->slug) }}"
+           style="
+                font-size:18px;
+                font-weight:700;
+                color:#222;
+                text-decoration:none;
+                transition:0.3s;
+           ">
+            {{ $item->product->name }}
+        </a>
+    </h5>
+
+    @if($item->product->has_variants)
+        <div style="
+            display:flex;
+            flex-wrap:wrap;
+            gap:8px;
+            margin-top:8px;
+        ">
+
+            @foreach ($item->variant->VariantAttributes as $attribute)
+
+                <span style="
+                    background:#f5f5f7;
+                    border:1px solid #e5e5e5;
+                    padding:6px 12px;
+                    border-radius:30px;
+                    font-size:13px;
+                    color:#555;
+                    display:inline-flex;
+                    align-items:center;
+                    gap:4px;
+                ">
+                    <strong style="font-weight:600;">
+                        {{ $attribute->attributeValue->attribute->name }}
+                    </strong>
+                    :
+                    {{ $attribute->attributeValue->value }}
+                </span>
+
+            @endforeach
+
+        </div>
+    @endif
+
+</div>
                                     </div>
                                 </td>
                                 <td class="table-wrapper">
                                     <div class="table-wrapper-center">
-                                        @if ($item->product->has_variants)
-                                            <h5 class="heading">{{ __('website.has_variants') }}</h5>
+                                        @if (!$item->product->has_variants)
+                                            <h5 class="heading">{{ $item->product->firstVariant()->price }}</h5>
                                         @else
-                                            <h5 class="heading">{{ $item->product->price }}</h5>
+                                            <h5 class="heading">{{ $item->variant->price }}</h5>
                                         @endif
                                     </div>
                                 </td>

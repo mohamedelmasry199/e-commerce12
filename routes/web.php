@@ -4,9 +4,11 @@ use App\Http\Controllers\Website\CategoryController;
 use App\Http\Controllers\Website\ProductController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Website\BrandController;
+use App\Http\Controllers\Website\CartController;
 use App\Http\Controllers\Website\FaqController;
 use App\Http\Controllers\Website\PageController;
 use App\Http\Controllers\Website\ProfileController;
+use App\Http\Controllers\Website\WishlistController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -56,6 +58,13 @@ Route::group([
 
             Route::get('/profile/{id}', [ProfileController::class, 'show'])
                 ->name('profile.show');
+
+                ##wishlist
+            Route::get('wishlist',  WishlistController::class)->name('wishlist');
+            ###end wishlist
+            #### cart
+                Route::get('cart', CartController::class)->name('cart');
+            ### end cart
         });
     });
 });
