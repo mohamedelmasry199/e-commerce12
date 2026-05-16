@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -68,18 +69,22 @@ class RegisterController extends Controller
      *
      * @return User
      */
-   protected function create(array $data)
+  protected function create(array $data)
 {
-    return User::create([
-        'name' => $data['name'],
-        'email' => $data['email'],
-        'phone' => $data['phone'],
-        'password' => Hash::make($data['password']),
-        'country_id' => $data['country_id'],
+    $user = User::create([
+        'name'           => $data['name'],
+        'email'          => $data['email'],
+        'phone'          => $data['phone'],
+        'password'       => Hash::make($data['password']),
+        'country_id'     => $data['country_id'],
         'governorate_id' => $data['governorate_id'],
-        'city_id' => $data['city_id'],
-        'is_active' => 1,
+        'city_id'        => $data['city_id'],
+        'is_active'      => 1,
     ]);
+
+    $user->cart()->create();
+
+    return $user;
 }
      public function showRegistrationForm()
     {
