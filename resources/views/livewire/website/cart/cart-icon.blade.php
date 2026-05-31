@@ -50,9 +50,10 @@
 
                             <div class="price">
                                 <p class="new-price">
-                                    {{ $item->price }} EGP
+                                    {{ $item->price }} EGP x {{ $item->quantity }} = {{ number_format($item->price * $item->quantity, 2) }} EGP
                                 </p>
                             </div>
+
                         </div>
 
                     </div>
@@ -94,7 +95,7 @@
             <h5 class="wrapper-title">Subtotal</h5>
 
             <h5 class="wrapper-title">
-                {{ $cartItems->sum('price') }} EGP
+                {{ number_format($cartItems->sum(fn($item) => $item->price * $item->quantity), 2) }} EGP
             </h5>
         </div>
 

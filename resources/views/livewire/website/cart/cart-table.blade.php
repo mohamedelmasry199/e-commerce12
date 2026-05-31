@@ -107,7 +107,7 @@
         <div class="wishlist-btn cart-btn">
             <a href="" wire:click.prevent="clearCart" class="clean-btn">Clear Cart</a>
             <button href="#"  @click="$dispatch('updateCart')" class="shop-btn update-btn">Update Cart</button>
-            {{-- <a href="{{ route('website.checkout.get') }}" class="shop-btn">Proceed to Checkout</a> --}}
+            <a href="{{ route('website.checkout.get') }}" class="shop-btn">Proceed to Checkout</a>
         </div>
     </div>
 

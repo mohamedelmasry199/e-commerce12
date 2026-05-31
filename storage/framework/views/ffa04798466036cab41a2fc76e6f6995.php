@@ -130,7 +130,7 @@ if (isset($__slots)) unset($__slots);
                                 <p class="category"><?php echo e(__('website.category')); ?> : <span
                                         class="inner-text"><?php echo e($product->category->name); ?></span></p>
                                 <p class="sku"><?php echo e(__('website.sku')); ?> : <span
-                                        class="inner-text"><?php echo e($product->sku); ?></span></p>
+                                        class="inner-text"><?php echo e($product->firstVariant()->sku); ?></span></p>
                             </div>
                             <hr>
 
@@ -235,7 +235,7 @@ if (isset($__slots)) unset($__slots);
 
         </div>
         </div>
-        
+
     </section>
 
 

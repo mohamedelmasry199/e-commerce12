@@ -110,7 +110,7 @@
                                 <p class="category">{{ __('website.category') }} : <span
                                         class="inner-text">{{ $product->category->name }}</span></p>
                                 <p class="sku">{{ __('website.sku') }} : <span
-                                        class="inner-text">{{ $product->sku }}</span></p>
+                                        class="inner-text">{{ $product->firstVariant()->sku }}</span></p>
                             </div>
                             <hr>
 
@@ -215,7 +215,7 @@
 
         </div>
         </div>
-        
+
     </section>
 
 

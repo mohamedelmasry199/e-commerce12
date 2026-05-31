@@ -52,9 +52,10 @@
 
                             <div class="price">
                                 <p class="new-price">
-                                    <?php echo e($item->price); ?> EGP
+                                    <?php echo e($item->price); ?> EGP x <?php echo e($item->quantity); ?> = <?php echo e(number_format($item->price * $item->quantity, 2)); ?> EGP
                                 </p>
                             </div>
+
                         </div>
 
                     </div>
@@ -96,7 +97,7 @@
             <h5 class="wrapper-title">Subtotal</h5>
 
             <h5 class="wrapper-title">
-                <?php echo e($cartItems->sum('price')); ?> EGP
+                <?php echo e(number_format($cartItems->sum(fn($item) => $item->price * $item->quantity), 2)); ?> EGP
             </h5>
         </div>
 

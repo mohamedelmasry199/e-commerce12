@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('user_email');
 
             $table->decimal('price', 8, 2);
-            $table->decimal('shapping_price', 8, 2);
+            $table->decimal('shipping_price', 8, 2);
             $table->decimal('total_price', 8, 2);
 
             $table->text('note');

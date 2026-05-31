@@ -18,12 +18,15 @@ class Coupon extends Model
     {
         return date('d/m/Y H:i a', strtotime($value));
     }
-    public function ScopeValid($query){
-        return $query->where(now() < 'end_date')
-                     ->whereColumn('limit','>','time_used')
-                     ->where('is_active',1)
-                     ->where('start_date','<=',now());
-    }
+    
+    public function scopeValid($query)
+{
+    return $query
+        ->where('end_date', '>=', now())
+        ->whereColumn('limit', '>', 'time_used')
+        ->where('is_active', 1)
+        ->where('start_date', '<=', now());
+}
    public function scopeNotValid($query){
     return $query->where('end_date', '<', now())
                  ->orWhereColumn('limit', '<=', 'time_used')
