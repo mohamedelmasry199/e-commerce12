@@ -8,7 +8,7 @@
             <div class="blog-bradcrum">
                 <span><a href="{{ route('website.home') }}">{{ __('website.home') }}</a></span>
                 <span class="devider">/</span>
-                <span><a href="{{ route('website.shop') }}">{{ __('website.shop') }}</a></span>
+                <span><a href="{{ route('website.home') }}">{{ __('website.shop') }}</a></span>
                 <span class="devider">/</span>
                 <span><a href="javascript:void(0)">{{ $product->name }}</a></span>
             </div>

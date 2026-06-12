@@ -21,6 +21,7 @@ class ClearCartListener implements ShouldQueue
 
         if ($cart) {
             $cart->items()->delete();
+            $cart->coupon = null;
         }
     }
 }

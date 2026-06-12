@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Website;
 
+use App\Actions\Checkout\ResolveCheckoutSessionAction;
+use App\Actions\Payments\VerifyPaymentAction;
 use App\DTOs\CheckoutData;
 use App\Exceptions\Checkout\EmptyCartException;
 use App\Exceptions\Checkout\OutOfStockException;
@@ -24,7 +26,9 @@ class CheckoutController extends Controller
     ) {}
     public function showCheckoutPage(){
         $cart = Cart::where('user_id', auth()->id())->first()->with('items.product')->get();
-        return view('website.checkout', compact('cart'));
+          $idempotencyKey = ResolveCheckoutSessionAction::generateKey();
+        session(['checkout_idempotency_key' => $idempotencyKey]);
+        return view('website.checkout', compact('cart', 'idempotencyKey'));
     }
     public function checkout(){
         //1-get total price of the cart items +shipping price - discount if there is a coupon
@@ -39,6 +43,16 @@ class CheckoutController extends Controller
     public function process( CheckoutRequest $request)
     {
         $user = auth()->user();
+         // ── Retrieve the idempotency key ─────────────────────────────
+        // Read from the session — not from $request to prevent tampering
+        // (user cannot forge a key from a previous checkout to get the same order)
+        $idempotencyKey = session('checkout_idempotency_key');
+        if (! $idempotencyKey) {
+            // Key missing — user probably navigated directly to POST
+            // Redirect them back to checkout page to generate a fresh key
+            return redirect()->route('checkout.index')
+                ->with('error', __('checkout.session_expired'));
+        }
         $data_needed =[
             'name' => $request->first_name.' '.$request->last_name,
             'email' => $request->user_email,
@@ -54,10 +68,10 @@ class CheckoutController extends Controller
         $data = CheckoutData::fromArray($data_needed);
 
         try {
-            $result = $this->checkoutService->checkout($user, $data);
+            $result = $this->checkoutService->checkout($user, $data, $idempotencyKey);
 
             // If price drifted, flash a notice — user still proceeds
-            if ($result['priceChanged']) {
+           if ($result['priceChanged'] && ! $result['reused']) {
                 session()->flash('warning', __('checkout.price_updated'));
             }
 
@@ -77,6 +91,7 @@ class CheckoutController extends Controller
         } catch (PaymentException $e) {
             Log::error('CheckoutController: payment initiation failed', [
                 'user_id' => $user->id,
+                'idempotency_key'  => $idempotencyKey,
                 'error'   => $e->getMessage(),
             ]);
             return back()->with('error', __('checkout.payment_initiation_failed'));
@@ -84,6 +99,7 @@ class CheckoutController extends Controller
         } catch (\Throwable $e) {
             Log::error('CheckoutController: unexpected error', [
                 'user_id' => $user->id,
+                'idempotency_key'  => $idempotencyKey,
                 'error'   => $e->getMessage(),
                 'trace'   => $e->getTraceAsString(),
             ]);
@@ -99,29 +115,33 @@ class CheckoutController extends Controller
     //       We still verify here to handle cases where webhook is slow.
     // ──────────────────────────────────────────────────────────────────
 
+
     public function callback(Request $request)
     {
         try {
-            $result = app(\App\Actions\Payments\VerifyPaymentAction::class)
+            $result = app(VerifyPaymentAction::class)
                 ->execute($request->all(), config('payment.default'));
 
             if ($result->success) {
-                return redirect()->route('website.checkout.success', ['order' => $result->orderId])
+                // Clear the idempotency key from session — checkout is done
+                session()->forget('checkout_idempotency_key');
+
+                return redirect()->route('checkout.success', ['order' => $result->orderId])
                     ->with('success', __('checkout.payment_success'));
             }
 
-            return redirect()->route('website.checkout.failed', ['order' => $result->orderId])
-                ->with('error', __('website.checkout.payment_failed'));
+            return redirect()->route('checkout.failed', ['order' => $result->orderId])
+                ->with('error', __('checkout.payment_failed'));
 
         } catch (\Throwable $e) {
             Log::error('Checkout callback error', ['error' => $e->getMessage()]);
-            return redirect()->route('website.checkout.failed')
+            return redirect()->route('checkout.failed')
                 ->with('error', __('checkout.unexpected_error'));
         }
     }
 
     // ──────────────────────────────────────────────────────────────────
-    // STEP 3b — Payment failed / user cancelled at gateway
+    // STEP 3b — Payment failed
     // ──────────────────────────────────────────────────────────────────
 
     public function failed(Request $request)
@@ -133,17 +153,21 @@ class CheckoutController extends Controller
                 ->where('user_id', auth()->id())
                 ->first();
 
-            // Cancel order and restore stock if it's still pending
             if ($order && $order->status === 'pending') {
                 $this->checkoutService->cancelOrder($order);
+                // Note: cancelOrder calls markSessionFailed internally
+                // so the session is marked failed here
             }
         }
 
-        return view('website.checkout.failed', compact('order'));
+        // Clear the idempotency key — user must start a fresh checkout
+        session()->forget('checkout_idempotency_key');
+
+        return view('checkout.failed', compact('order'));
     }
 
     // ──────────────────────────────────────────────────────────────────
-    // STEP 4 — Order success page
+    // STEP 4 — Success page
     // ──────────────────────────────────────────────────────────────────
 
     public function success(Order $order)
@@ -152,7 +176,7 @@ class CheckoutController extends Controller
 
         $order->load(['items.product.images', 'transaction']);
 
-        return view('website.checkout.success', compact('order'));
+        return view('checkout.success', compact('order'));
     }
 
     // ──────────────────────────────────────────────────────────────────

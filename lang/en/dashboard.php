@@ -271,7 +271,7 @@ return [
     'product_table'=>'Product Table',
     'coupon_discount'=>'Coupon Discount',
     'coupon'=>'Coupon',
-    'shapping_price'=>'Shapping Price',
+    'shipping_price'=>'Shipping Price',
     'street'=>'Street',
     'no_coupons'=>'No Coupons',
     'order_items'=>'Order Items',

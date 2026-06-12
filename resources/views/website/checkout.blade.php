@@ -22,7 +22,7 @@
                 <div class="row gy-5">
                     {{-- shipping address --}}
                     <div class="col-lg-6">
-                        @livewire('website.checkout.shipping-details')
+                        @livewire('website.checkout.shipping-details',$idempotencyKey)
                     </div>
                     {{-- cart details --}}
                     <div class="col-lg-6">

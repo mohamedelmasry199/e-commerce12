@@ -167,7 +167,7 @@
                                 <div class="d-flex justify-content-between"
                                      style="font-size:0.875rem">
                                     <span class="text-muted">{{ __('checkout.shipping') }}</span>
-                                    <span>{{ number_format($order->shapping_price, 2) }} {{ __('common.currency') }}</span>
+                                    <span>{{ number_format($order->shipping_price, 2) }} {{ __('common.currency') }}</span>
                                 </div>
 
                                 <div style="border-top:1px solid #f3f4f6;padding-top:10px"

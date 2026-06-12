@@ -5,7 +5,7 @@
             <div class="cart-section wishlist-section">
                 <table>
                     <tbody>
-                        
+
                         <tr class="table-row table-top-row">
                             <td class="table-wrapper wrapper-product">
                                 <h5 class="table-heading"><?php echo e(__('website.products')); ?></h5>
@@ -124,7 +124,7 @@
                     </div>
                     <div class="cart-content">
                         <p class="content-title"><?php echo e(__('website.no_products')); ?></p>
-                        <a href="<?php echo e(route('website.shop')); ?>" class="shop-btn"><?php echo e(__('website.back_to_shop')); ?></a>
+                        <a href="<?php echo e(route('website.home')); ?>" class="shop-btn"><?php echo e(__('website.back_to_shop')); ?></a>
                     </div>
                 </div>
             </div>

@@ -121,7 +121,7 @@
                     </div>
                     <div class="cart-content">
                         <p class="content-title">{{ __('website.no_products') }}</p>
-                        <a href="{{ route('website.shop') }}" class="shop-btn">{{ __('website.back_to_shop') }}</a>
+                        <a href="{{ route('website.home') }}" class="shop-btn">{{ __('website.back_to_shop') }}</a>
                     </div>
                 </div>
             </div>

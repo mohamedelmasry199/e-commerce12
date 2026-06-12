@@ -1,6 +1,7 @@
 <div>
     <form action="{{ route('website.checkout.process') }}" method="post">
         @csrf
+        <input type="hidden" name="idempotency_key" value="{{ $idempotencyKey }}">
         <div class="checkout-wrapper">
             <div class="account-section billing-section">
                 <h5 class="wrapper-heading">Shipping Address</h5>

@@ -118,7 +118,7 @@
                 </div>
                 <div class="cart-content">
                     <p class="content-title"><?php echo e(__('website.no_products')); ?></p>
-                    <a href="<?php echo e(route('website.shop')); ?>" class="shop-btn"><?php echo e(__('website.back_to_shop')); ?></a>
+                    <a href="<?php echo e(route('website.home')); ?>" class="shop-btn"><?php echo e(__('website.back_to_shop')); ?></a>
                 </div>
             </div>
         </div>

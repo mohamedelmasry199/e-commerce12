@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Dashboard\FaqQuestionController;
+use App\Http\Controllers\Dashboard\OrderController;
 use App\Http\Controllers\Dashboard\SliderController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\WorldController;
+use App\Http\Middleware\MarkNotificationAsRead;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -135,6 +137,16 @@ Route::group([
 
             });
             ############################### End Faqs ######################################
+  ############################### orders Routes #############################
+            Route::group(['middleware' => 'can:orders'], function () {
+                Route::get('orders',         [OrderController::class, 'index'])->name('orders.index');
+                Route::get('orders/{id}',    [OrderController::class, 'show'])->name('orders.show')
+                    ->middleware(MarkNotificationAsRead::class);
+                Route::delete('orders/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
+                Route::get('orders/markDelivered/{id}', [OrderController::class, 'markDelivered'])->name('orders.markDelivered');
+                Route::get('orders-get-all', [OrderController::class, 'getAll'])->name('orders.all');
+            });
+            ############################### End orders ################################
 
     });
 });

@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\CleanExpiredCheckoutSessionsJob;
 use App\Jobs\ReleaseExpiredReservationsJob;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
@@ -10,3 +11,8 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 Schedule::job(new ReleaseExpiredReservationsJob)
     ->everyFifteenMinutes();
+ Schedule::job(CleanExpiredCheckoutSessionsJob::class)
+        ->dailyAt('02:00')
+        ->withoutOverlapping();
+        
+

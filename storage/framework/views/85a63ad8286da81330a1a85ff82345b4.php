@@ -99,7 +99,7 @@
 
                         <div class="d-flex justify-content-between small">
                             <span class="text-muted"><?php echo e(__('checkout.shipping')); ?></span>
-                            <span><?php echo e(number_format($order->shapping_price, 2)); ?> <?php echo e(__('common.currency')); ?></span>
+                            <span><?php echo e(number_format($order->shipping_price, 2)); ?> <?php echo e(__('common.currency')); ?></span>
                         </div>
 
                         <hr class="my-2">

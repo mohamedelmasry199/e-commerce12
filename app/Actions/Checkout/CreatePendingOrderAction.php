@@ -30,7 +30,7 @@ class CreatePendingOrderAction
             'user_phone'      => $data->phone,
             'user_email'      => $data->email,
             'price'           => $cart->subtotal,
-            'shapping_price'  => $cart->shippingPrice,
+            'shipping_price'  => $cart->shippingPrice,
             'total_price'     => $cart->total,
             'note'            => $data->note ?? '',
             'status'          => OrderStatus::PENDING->value,
@@ -47,14 +47,14 @@ class CreatePendingOrderAction
         foreach ($cart->items as $item) {
             $product = $item->product;
             $variant = $item->variant ? $item->variant :$product->firstVariant();
-   
+
 
             // Serialize variant attributes as snapshot (e.g. Color: Red, Size: XL)
-            if($product->hasVariant){$attributeSnapshot = $variant->attributeValues
+            if($product->has_variants){
+                $attributeSnapshot = $variant->attributeValues
                 ->mapWithKeys(fn ($av) => [$av->attribute->name => $av->value])
                 ->toArray();}
                 else{$attributeSnapshot = null;}
-
 
             $order->items()->create([
                 'product_id'         => $product->id,
@@ -62,8 +62,8 @@ class CreatePendingOrderAction
                 'product_name'       => $product->getNameTranslated(),
                 'product_desc'       => $product->getSmallDescTranslated(),
                 'product_quantity'   => $item->quantity,
-                'product_price'      => $item->price,   // already corrected by GetValidatedCartAction
-                'attributes'         => $attributeSnapshot,
+                'product_price'      => $item->price,
+                'attributes'         => json_encode($attributeSnapshot),
             ]);
         }
 

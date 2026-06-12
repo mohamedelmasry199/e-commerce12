@@ -77,5 +77,6 @@ return [
         'retry'              => 'Return to Cart & Try Again',
         'continue_shopping'  => 'Continue Shopping',
     ],
+'session_expired' => 'Your checkout session expired. Please try again.',
 
 ];

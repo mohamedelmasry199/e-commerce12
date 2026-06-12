@@ -92,7 +92,7 @@
 
                         <div class="d-flex justify-content-between small">
                             <span class="text-muted">{{ __('checkout.shipping') }}</span>
-                            <span>{{ number_format($order->shapping_price, 2) }} {{ __('common.currency') }}</span>
+                            <span>{{ number_format($order->shipping_price, 2) }} {{ __('common.currency') }}</span>
                         </div>
 
                         <hr class="my-2">

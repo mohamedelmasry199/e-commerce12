@@ -135,7 +135,7 @@
                 </ul>
             </li>
 
-            {{-- @can('orders')
+            @can('orders')
                 <li class="nav-item"><a href="javascript:void(0)"><i class="la la-cart-arrow-down"></i><span
                             class="menu-title" data-i18n="nav.dash.main">{{ __('dashboard.orders') }}</span><span
                             class="badge badge badge-info badge-pill float-right mr-2">10</span></a>
@@ -146,7 +146,7 @@
                     </ul>
                 </li>
 
-            @endcan --}
+            @endcan
 
             {{-- <li class=" navigation-header">
                 <span data-i18n="nav.category.layouts">{{ __('dashboard.system') }}</span><i

@@ -257,7 +257,7 @@
 
             <div class="total-row">
                 <span class="label">{{ __('checkout.shipping') }}</span>
-                <span class="value">{{ number_format($order->shapping_price, 2) }} {{ __('common.currency') }}</span>
+                <span class="value">{{ number_format($order->shipping_price, 2) }} {{ __('common.currency') }}</span>
             </div>
 
             <div class="total-row grand">

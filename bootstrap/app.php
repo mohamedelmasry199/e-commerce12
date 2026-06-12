@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\MarkNotificationAsRead;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -11,6 +12,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+          $middleware->use([
+            MarkNotificationAsRead::class,
+
+        ]);
             $middleware->redirectGuestsTo(function(){
             if(request()->is('*dashboard*')){
                 return route('dashboard.login');

@@ -13,6 +13,8 @@ class OrderSummary extends Component
 
 
     #[On('shippingPriceUpdated')]
+        #[On('couponApplied')]
+
     public function updateShippingPrice($price)
     {
         $this->shippingPrice = $price;

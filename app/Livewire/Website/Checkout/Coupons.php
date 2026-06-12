@@ -43,11 +43,12 @@ class Coupons extends Component
         ]);
         $this->count++;
 
-        // decrease coupon count
         if($this->count > 1){
             $this->dispatch('couponUsed', 'Coupon used before, you can not use it again');
             return;
         }
+                // decrease coupon count
+
         $couponObj = CouponModel::where('code', $this->code)->first();
         $couponObj->update([
             'time_used' => $couponObj->time_used + 1,

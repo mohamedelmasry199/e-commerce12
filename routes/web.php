@@ -55,7 +55,7 @@ Route::group([
         });
 
 
-        Route::get('shop',           [HomeController::class, 'showShopPage'])->name('shop');
+        // Route::get('shop',           [HomeController::class, 'showShopPage'])->name('shop');
 
         ################################## Profile ####################################
         Route::group(['middleware' => 'auth:web'], function () {

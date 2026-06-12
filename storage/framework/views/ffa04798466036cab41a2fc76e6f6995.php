@@ -7,7 +7,7 @@
             <div class="blog-bradcrum">
                 <span><a href="<?php echo e(route('website.home')); ?>"><?php echo e(__('website.home')); ?></a></span>
                 <span class="devider">/</span>
-                <span><a href="<?php echo e(route('website.shop')); ?>"><?php echo e(__('website.shop')); ?></a></span>
+                <span><a href="<?php echo e(route('website.home')); ?>"><?php echo e(__('website.shop')); ?></a></span>
                 <span class="devider">/</span>
                 <span><a href="javascript:void(0)"><?php echo e($product->name); ?></a></span>
             </div>
